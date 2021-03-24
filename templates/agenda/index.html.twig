@@ -1,0 +1,269 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Agenda de solicitudes {% endblock %}
+
+{% block body %}
+<div class="mai-wrapper mai-clinica">
+	<div class="main-content container">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="panel panel-default ">
+					<div class="panel-heading ">
+						Agenda de solicitudes programadas
+						<span class="panel-subtitle">Seleccione los criterios de busqueda para mostrar las <span class="text-primary">solicitudes del día</span> </span>
+					</div>
+					<div class="panel-body">
+						<form action="" method="post" class="mayoristas-search">
+							<div class="row">
+								{% if is_granted("ROLE_ADMIN") %}
+								<div class="col-sm-3 pr-0">
+									<div class="form-group">
+										<select name="sede" id="region" class="form-control" required ="" data-parsley-errors-messages-disabled="false">
+											<option value="">Seleccionar Sede</option>
+											<option value="01">{{nombre_sede('01')}}</option>
+											<option value="02">{{nombre_sede('02')}}</option>
+											<option value="04">{{nombre_sede('04')}}</option>
+											<option value="all">Todas las sedes</option>
+										</select>
+									</div>
+								</div>
+								{% endif %}
+								<div class="col-sm-3 pr-0">
+									<input name="inicio" id="date1" type="text" placeholder="00-00-2018" class="form-control" autoComplete="off" required ="" data-parsley-errors-messages-disabled="false">
+								</div>
+								<div class="col-sm-3 pr-0">
+									<div class="form-group">
+										<button type="submit" class="btn btn-space btn-secondary btn-lg search m-0 pl-5 pr-5" style="font-size:;">Buscar</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				
+				
+				<div class="panel panel-default panel-table">
+					<form action="{{ path('procesar_solicitud') }}" method="post" id="ftable">
+					{% if total != '' %}
+					<div class="panel-heading panel-heading-divider">
+						Total: 
+						 <span class="badge badge-pill badge-danger px-3" style="margin-top: -5px; font-size: 0.9em;">{{ total }} </span>
+						 {% if total == 1 %} solicitud registrada{% else %} solicitudes registradas {% endif %}
+					</div>
+					{% endif %} 
+					<div class="panel-body mt-3">
+						<table id="table3" class="table table-striped- table-hover">
+							<thead style="background: #f5f5f5">
+								<tr>
+									<th style="width:10%">Destino</th>
+									<th style="width:13%">HC</th>
+									<th >Estado</th>
+									<th class="content-hide" >Ub. Actual</th>
+									<th >Paciente</th>
+									<th >Doctor</th>
+									{% if app.user.rol == 'ROLE_ADMIN' %}
+									<th >Zona</th>
+									<th class="content-hide">Consultorio</th>
+									
+									<th >Caja</th>
+										{% endif %}
+									<th >Tipo</th>
+								
+									<th class="content-hide">F. Registro</th>
+									<th style="width:10%">H. Cita</th>
+									{% if is_granted("ROLE_ADMIN") %}										
+									<th style="width:5%" data-orderable="false" class="text-right">
+									<label class="custom-control custom-control-sm custom-checkbox has-danger">
+										<input id="check-all" type="checkbox" class="custom-control-input">
+										<span class="custom-control-indicator custom-control-color-"></span>
+									</label>
+									</th>
+									{% endif %}
+								</tr>
+							</thead>
+							<tbody>
+							{% for item in solicitudes %}
+								</td>
+									<td>										
+										{{nombre_sede(item.codsede)}}
+									</td>
+									<td>
+									<a href="{{ path('reportes') }}?buscar={{ item.codhistoria|default("0") }}" data-hc="{{ item.codhistoria|default("0") }}">
+										HC{{ formato_hc(item.codhistoria)|default("0000000") }}-{{ formato_folio(item.folio) }} 										
+										</a>
+									</td>
+									<td class="text-capitalize"><span class="badge badge-pill badge{{ tagstats(item.estado) }}">{{ stpedido(item.estado) }}</span>	</td>
+									<td class="content-hide">
+										{{ ubicacion_actual (item.estado)}}	
+										<span class="badge badge-pill badge{{ tagstats(item.estado) }}">{{ stpedido(item.estado) }}</span>										
+									</td>
+									<td class="text-capitalize">{{ item.paciente | title}}</td>
+									<td class="text-capitalize"> {{ item.nommedico | title}}</td>
+									{% if app.user.rol == 'ROLE_ADMIN' %}
+									<td>{{ item.codzona }}</td>
+									<td class="content-hide">{{ item.nomconsultorio }}</td>
+									
+									<td>{{ tUbi(item.codhistoria,item.codsede,'caja') }}</td>
+									{% endif %}
+									<td data-tipohc="{{ item.tipohc }}">
+									{{ tipo_historia(item.tipohc)}}
+										
+									</td>
+									<td class="content-hide">
+									{{ item.solicitud|date('d/m/Y h:i A') }}
+									</td>
+									<td>
+									{# {{ item.fechapedido|date('d/m/Y') }}  #}
+									{{ item.horapedido|date('h:i A') }}
+									</td>
+
+									{% if is_granted("ROLE_ADMIN")  %}	
+									<td class="text-right">
+										{% if item.estado < 1 %}	
+										<label class="custom-control custom-control-sm custom-checkbox has-danger"  >
+											<input name="so[{{loop.index0}}][idsolicitud]"  type="checkbox" value="{{ item.idsolicitud }}" class="custom-control-input">
+											<span class="custom-control-indicator custom-control-color"></span>
+											<input name="so[{{loop.index0}}][estado]"  type="hidden" value="1" class="custom-control-input">
+											<input name="so[{{ loop.index0 }}][user]" type="hidden" value="{{ app.user.idusuario }}"  >											
+										</label>
+										{% endif %}
+									</td>
+									{% endif %}
+								</tr>
+							{% endfor %}
+							</tbody>
+							 {% if is_granted("ROLE_ADMIN") %}	
+								{# {{ paginador|raw }} #}
+							<tfoot>
+							<tr>
+								<td colspan="12" class="px-0-">
+									<div class="text-right">
+										<button type="submit" class="btn btn-space btn-danger btn-sm ml-0 mt-3 px-5 iniciar-servicio">CONFIRMAR ASIGNACIÓN DE SOLICITUD </button>
+										{# <a href="javascript:void(0);" class="btn btn-space btn-danger btn-sm ml-0 mt-3 px-5 listorecoger---"> En acopio de almacen</a> #}
+
+									</div>
+								</td>
+							</tr>
+						</tfoot>
+						{% endif %}
+
+						</table>
+					</div>
+					</form>
+					<form action="{{ path("reportes") }}" id="reporte" method="post">
+									<input type="hidden" name="buscar" id="buscar" value="">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+
+<script>
+	$(document).ready(function(){
+		$.fn.dataTable.ext.errMode = 'none';
+		App.init();
+		App.menuActive(1,3);
+		App.dataTables();
+		$('form').parsley();
+		$( "#date1" ).datepicker({
+			changeMonth: true,
+			changeYear: true,			
+			dateFormat: 'dd-mm-yy',
+			setDate: 'today'
+		})
+		//.datepicker('setDate', 'today');
+		//var txtFecha = $( "#date1" ).val();
+		//$(".fechaHoy").text(txtFecha);
+		$( "#date2" ).datepicker({
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'dd-mm-yy'
+		});
+		$('.checkAll').addClass('without-after-element');
+		console.log ("elimnad");
+
+		$("table#table3 a").click(function(){
+			var d = $(this).attr("data-hc");
+			$("#buscar").val(d);
+			$("form#reporte").submit();
+		});
+/*
+		$('.select_all').click(function(e) {
+			//var checkboxes = $(this).closest('form').find(':checkbox');
+			var checkboxes = $(this).closest('form').find(':checkbox');
+			checkboxes.prop('checked', true);
+		});
+		$('.deselect_all').click(function(e) {
+			//var checkboxes = $(this).closest('form').find(':checkbox');
+			var checkboxes = $(this).closest('form').find(':checkbox');
+			checkboxes.prop('checked', false);
+		});
+*/
+		
+		/* ------------------------------------*/
+			$('#check-all').change(function() {
+				var st = $(this).prop('checked');
+				var checkboxes = $(this).closest('form').find(':checkbox');
+				if (st){
+					checkboxes.prop('checked', true);
+				}else {
+					checkboxes.prop('checked', false);		
+				}
+			});
+
+		/* ------------------------------------*/
+/*
+		$(".listorecoger").click(function(e){
+			//ajaxForm
+			$("form#ftable").ajaxSubmit({
+			"datatype":"json",
+			"success": function(responseText, statusText, xhr, $form){
+				if(responseText.success===1){
+					swal("Procesando!", "Estado solicitud actualizada correctamente!", "success");
+					location.reload();
+				}else{
+					swal("Procesando!", "Estado solicitud no se puede actualizar!", "error");
+				}
+			}
+			});
+			return false;
+		});
+*/
+	
+		$('#ftable').submit(function(e){
+			e.preventDefault();
+			$(this).ajaxSubmit({
+			"datatype":"json",
+			"success": function(responseText, statusText, xhr, $form){
+				if(responseText.success===1){
+
+					
+					$("#ftable")[0].reset();
+					var checkboxes = $("#ftable").closest('form').find(':checkbox');
+					checkboxes.prop('checked', false);	
+					swal({
+							title: "Solicitudes ubicadas!",
+							text: "Se ha actualizado correctamente las solicitudes seleccionadas!",
+							type: "success"
+						}, function() {
+						
+						});
+					
+					location.reload();
+				}else{
+					swal("Advertencia!", "las solicitudes no se han podido actualizar!", "error");
+				}
+			}
+			});
+		});
+
+
+
+	})
+</script>
+
+{% endblock %}

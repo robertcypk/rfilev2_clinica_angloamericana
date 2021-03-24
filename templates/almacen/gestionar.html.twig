@@ -1,0 +1,247 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestionar Historia Clínica{% endblock %}
+
+{% block body %}
+
+<div class="mai-wrapper mai-clinica">
+	<div class="main-content container">
+		<div class="row">
+			<div class="col-sm-12">
+				<h4 class=" badge-pill badge-danger px-4 py-2 ">Gestión de Cajas y Folios de ubicación</h4>
+				
+					<div class="panel panel-default panel-table">
+						
+						<div class="panel-heading panel-heading-divider">
+						Ubicación de HC - <span class="text-danger">{{formato_hc (codigo)}}</span>
+						<span class="panel-subtitle">Listado de ubicaciones y folios disponibles para solicitudes de Historias Clínicas </span>
+					</div>
+					<div class="panel-body mt-3">
+						<table id="table4" class="table table-striped- table-hover">
+							<thead style="background: #f5f5f5">
+								<tr>
+									<th style="width:60%--">Sede</th>
+									<th>Paciente</th>
+									<th>HC</th>
+									<th>Caja</th>
+									<th>Folio</th>
+									<th>Estado</th>
+									<th data-orderable="false"></th>
+								</tr>
+							</thead>
+							<tbody>
+							{% for item in hc %}
+							<tr id="{{ item.idubicacion }}">
+									<td>{{ nombre_sede(item.sede)|upper  }}</td>
+									<td>{{ npaciente(item.codhistoria) }}</td>
+									<td><span class="badge badge-pill badge-success">HC{{ formato_hc(item.codhistoria ) }}-{{formato_folio(item.folio)}}</span></td>
+									<td>{{ item.caja }}</td>
+									<td>{{ item.folio }}</td>
+									<td>{{tipo_historia(item.estado)}}</td>
+									<td class="actions">
+										<a href="#guardarubicacion" 
+										data-ubi="{{ item.idubicacion }}"
+										data-codsede="{{ item.codsede }}"
+										data-caja="{{ item.caja }}"
+										data-folio="{{ item.folio }}"
+										data-estado="{{ item.estado }}"
+										id="editMedico">
+											<span class="s7-note2 " data-placement="left" title="Editar HC"></span>
+										</a>
+										<a href="#table4" data-ubi="{{ item.idubicacion }}" data-user=""  id="borrar-ubicacion">
+											<span class="s7-trash "  data-placement="left" title="Eliminar"></span>
+										</a>
+									</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+					<div class="panel panel-default">
+						<div class="panel-heading panel-heading-divider">
+							Datos de ubicación
+							<span class="panel-subtitle">Ingresa los datos de ubicación requerido </span>
+						</div>
+						<!-- FORMULARIO -->
+						<form id="guardarubicacion" action="{{ path("guardarubicacion") }}" method="post" novalidate="">
+						<div class="panel-body">
+							<div class="form-group row pt-3">
+								<label class="col-3 col-form-label text-right">Historia Clínica  <span class="text-danger">*</span></label>
+								<div class="col-6">
+									<input id="tbl_ubicaciones_codigo" 
+											name="tbl_ubicaciones[codigo]" 
+											required="required" 
+											class="form-control" 
+											placeholder="0000000" 
+											type="text" 
+											{# value="{{codigo}}" #}
+											value="{{codigo}}"
+											data-parsley-required-message="Ingresa el numero de HC">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-3 col-form-label text-right">Archivo  <span class="text-danger">*</span></label>
+								<div class="col-6">
+									<select id="tbl_ubicaciones_sede" name="tbl_ubicaciones[sede]" required="required" class="form-control" data-parsley-required-message="Selecciona la sede de archivo ">
+										<option value="">SELECCIONAR</option>
+										<option value="01">SAN ISIDRO</option>
+										<option value="02">LA MOLINA</option>										
+									</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-3 col-form-label text-right">Caja  <span class="text-danger">*</span></label>
+								<div class="col-3">
+									<input id="tbl_ubicaciones_caja" 
+									name="tbl_ubicaciones[caja]" 
+									required="required" 
+									class="form-control" 
+									placeholder="0000000" 
+									data-parsley-required-message="Ingresa el numero de ubicación" 
+									type="number"
+									value=""
+									>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-3 col-form-label text-right">Folio  <span class="text-danger">*</span></label>
+								<div class="col-3">
+									<input 	id="tbl_ubicaciones_folio" 
+											name="tbl_ubicaciones[folio]" 
+											required="required" 
+											class="form-control" 
+											placeholder="000" 
+											min ="0"
+											data-parsley-required-message="Ingresa el numero de folio" 
+											type="number"
+											value=""
+											max="99"
+											>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-3 col-form-label text-right">Tipo  <span class="text-danger">*</span></label>
+								<div class="col-6">
+									<select id="tbl_ubicaciones_estado" name="tbl_ubicaciones[estado]" required="required" class="form-control" data-parsley-required-message="Selecciona el tipo de HC">
+										<option value="" >Seleccione un estado</option>
+										<option value="1" >Activo</option>
+										<option value="2" >Pasivo</option>
+										<option value="3" >Fallecido</option>
+									</select>
+								</div>
+							</div>
+							<div id="tbl_ubicaciones">
+								<input id="tbl_ubicaciones_idubicaciones" name="tbl_ubicaciones[idubicaciones]" value="" type="hidden">
+							</div>
+							<div class="form-group row pt-5 pb-5">
+								<div class="col-3">
+								</div>
+								<div class="col-6 ">
+									<button type="submit" class="btn btn-danger btn-lg px-5">GUARDAR UBICACIÓN</button>
+									<button type="reset" class="btn btn-secondary btn-lg px-5 borrarform" >BORRAR</button> 
+									<p class="msg"></p>
+								</div>
+							</div>
+						</div>
+						</form>
+						<!-- -->
+					</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+
+<script>
+	$(document).ready(function(){
+		App.init();
+		App.dataTables();
+        App.menuActive(1,2);
+		var hc= "{{codigo}}";
+		var url= "{{ path('gestionarubhc') }}/";
+		$('form').parsley();
+		$("form").ajaxForm({
+			"beforeSubmit" : function(arr, $form, options){
+				var fv = $("#guardarubicacion").parsley().isValid();
+				 if (fv) {
+					 hc= $("#tbl_ubicaciones_codigo").val();
+						return true;
+					} else {							
+						return false;
+					}				
+			},					
+			"datatype":"json",
+			"success": function(responseText, statusText, xhr, $form){
+				if(responseText.success===1){
+					swal("Procesando!", "Ubicación guardada correctamente!", "success");
+					//window.reload();
+					$("#guardarubicacion")[0].reset();
+					window.location.href = url+hc;
+				}else if(responseText.success===2){
+					swal("Procesando!", "Ubicación actualizada correctamente!", "success");
+					$("#guardarubicacion")[0].reset();
+					location.reload();
+				}else{
+					swal("Procesando!", "Esta ubicación no se puede guardar!", "error");
+				}
+			}
+		});
+		seleccionaritemEditar();
+	});
+	function seleccionaritemEditar(){
+		$("a#editMedico").on('click',function(){
+			var ubi = $(this).attr("data-ubi");
+			var codsede = $(this).attr("data-codsede");
+			var caja = $(this).attr("data-caja");
+			var folio = $(this).attr("data-folio");
+			var estado = $(this).attr("data-estado");
+			$("#tbl_ubicaciones_caja").val(caja);
+			$("#tbl_ubicaciones_folio").val(folio);
+			$("#tbl_ubicaciones_estado").val(estado);
+			$("#tbl_ubicaciones_idubicaciones").val(ubi);
+			$("#tbl_ubicaciones_sede option").each(function(){
+				if($(this).val() === codsede){
+					$(this).prop("selected",true);
+				}
+			});
+		});
+		$(".borrarform").click(function(){
+			$("#tbl_ubicaciones_idubicaciones").val("");
+		});
+		$("a#borrar-ubicacion").click(function () {
+			var id = $(this).attr('data-ubi');
+			console.log(id);
+			swal({
+				title: "¿Deseas eliminar la ubicación?",
+				text: "Esta acción eliminará todos los datos relacionados a la historia clinica!",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonClass: "btn-danger",
+				confirmButtonText: "Sí, eliminar ubicación",
+				cancelButtonText: "Cancelar",
+				closeOnConfirm: false
+			},
+				function (confirm) {
+					if (confirm) {
+						$.post('{{ path("eliminarubicacion") }}',{id:id},
+						function(data){
+							if(data.success){
+								swal("Procesando!", "Ubicación eliminada!", "success");
+								location.reload();
+							}else{
+								swal("Procesando!", "Esta ubicación no se puede eliminar!", "error");
+							}
+						},'json');
+					}
+					/**/
+				});
+		});
+	}
+</script>
+
+{% endblock %}

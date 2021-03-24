@@ -1,0 +1,134 @@
+{% extends 'base.html.twig' %}
+{% block title %}Crear usuario{% endblock %}
+{% block body %}    
+    <div class="mai-wrapper mai-clinica">
+        <div class="main-content container">
+            <div class="row">
+                <div class="col-sm-12">
+				<h4 class=" badge-pill badge-danger px-4 py-2 ">Nuevo usuario</h4>
+				 {{ include('tbl_usuarios/_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal confirmación de INGRESO DE NUEVO Usuario -->
+        <div id="mod-warning" tabindex="-1" role="dialog" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" data-dismiss="modal" aria-hidden="true" class="close"><span class="s7-close"></span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center">
+                        <div class="text-warning"><span class="modal-main-icon s7-attention"></span></div>
+                            <h3 class="mb-4">CONFIRMAR</h3>
+                            <p>¿Esta seguro(a) de agregar un nuevo usuario atencion?.<br>Si no esta seguro(a), click a cancelar.</p>
+                            <div class="mt-6">
+                                <button type="button" data-dismiss="modal" class="btn btn-sm btn-space btn-secondary">Cancelar</button>
+                                <button type="button" data-dismiss="modal" class="btn btn-sm btn-space btn-warning">Agregar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+	</div>
+{% endblock %}
+
+{% block javascript %}
+
+    <script type="text/javascript">
+        jQuery(function(){
+            paises();
+            departamento();
+            provincia();
+            distrito();
+            seleccionarmedicos();
+        });
+        function seleccionarmedicos(){
+            $("#tbl_usuarios_idarea").change(function(){
+                var codzona = $(this).val();
+                $.post('{{ path("medicos_codigo_zona") }}',{codzona,codzona},function(data){
+                    if($.trim(data) !== ""){
+                        var html = '';
+                        $.each(data,function(index,item){
+                            html += '<option value="'+ item.codmedico +'" >'+ item.medico +'</option>';
+                        });
+                        $(".medicos_codigo_zona").html(html);
+                    }else {
+                       $(".medicos_codigo_zona").html("<option value=''>Médicos no disponibles</option>");
+                    }
+                },'json');
+            });
+        }
+        function paises(){
+            $.get("{{ path("paises") }}", function(data){
+                var html = "<option value='pe'>Seleccione un pais</option>";
+                if($.trim(data) !== ""){
+                    $.each(data,function(index,item){
+                        html += "<option value='"+item+"'>"+index+"</option>";
+                    });
+                }
+                $("#tbl_usuarios_codigopais").html(html);
+            },"json");
+        }
+        function departamento(){
+            $("#tbl_usuarios_codigopais").change(function(){
+                var val = $(this).val();
+                $.get("{{ path("departamento") }}/"+val+"",function(data){
+                    var html = "<option value=''>Seleccione un Departamento</option>";
+                if($.trim(data) !== ""){
+                    $.each(data,function(index,item){
+                        html += "<option  value='"+item.id_ubigeo+"'>"+item.nombre_ubigeo+"</option>";
+                    });
+                }
+                $("#tbl_usuarios_departamento").html(html);
+                $("#tbl_usuarios_departamento").attr('data-pais',val);
+                });
+            });
+        }
+        function provincia(){
+            $("#tbl_usuarios_departamento").change(function(){
+                var val = $(this).val();
+                var datapais = $(this).attr("data-pais");
+                $.get("{{ path("provincia") }}/"+datapais+"/"+val+"",function(data){
+                    var html = "<option value=''>Seleccione una provincia</option>";
+                if($.trim(data) !== ""){
+                    $.each(data,function(index,item){
+                        html += "<option value='"+item.id_ubigeo+"'>"+item.nombre_ubigeo+"</option>";
+                    });
+                }
+                $("#tbl_usuarios_provincia").html(html);
+                $("#tbl_usuarios_provincia").attr('data-pais',datapais);
+                });
+            });
+        }
+        function distrito(){
+            $("#tbl_usuarios_provincia").change(function(){
+                var val = $(this).val();
+                var datapais = $(this).attr("data-pais");
+                $.get("{{ path("distrito") }}/"+datapais+"/"+val+"",function(data){
+                    var html = "<option value=''>Seleccione un distrito</option>";
+                if($.trim(data) !== ""){
+                    $.each(data,function(index,item){
+                        html += "<option value='"+item.id_ubigeo+"'>"+item.nombre_ubigeo+"</option>";
+                    });
+                }
+                $("#tbl_usuarios_distritos").html(html);
+                $("#tbl_usuarios_distritos").attr('data-pais',datapais);
+                });
+            });
+        }
+
+        $(document).ready(function(){
+            $('#tbl_usuarios > div').addClass("form-group row")
+            $('#tbl_usuarios > div > label').addClass("col-3 col-form-label text-right")
+            $('#tbl_usuarios > div > input,select').addClass("col-6 form-control")
+            App.init();
+			App.formElements();
+			App.menuActive(1,5);
+            $('form').parsley();  
+        })
+    </script>
+{% endblock %}

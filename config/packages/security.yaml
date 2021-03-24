@@ -1,0 +1,100 @@
+security:
+    access_denied_url: ~ # Example: /foo/error403
+
+    # strategy can be: none, migrate, invalidate
+    session_fixation_strategy:  migrate
+    hide_user_not_found:  true
+    always_authenticate_before_granting:  true
+    erase_credentials:    true
+    access_decision_manager:
+        strategy: affirmative # One of affirmative, consensus, unanimous
+        allow_if_all_abstain: true
+        allow_if_equal_granted_denied:  true
+    encoders:
+        App\Entity\TblUsuarios:
+            algorithm: bcrypt
+            cost: 13
+    providers:
+        our_db_provider:
+            #id: App\Security\User\WebserviceUserProvider
+            entity:
+                class: App\Entity\TblUsuarios
+                property: email
+                manager_name: ~
+                # if you're using multiple entity managers
+                # manager_name: customer
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+        #in_memory: { memory: ~ }
+    firewalls:
+        default:
+            stateless: false
+            pattern: ^/
+            anonymous: ~
+            logout:
+                path: /logout
+                target: /
+            provider: our_db_provider
+            #access_denied_url: /dashboard
+            form_login:
+                # submit the login form here
+                check_path: /login_check
+
+                # the user is redirected here when they need to log in
+                login_path: /
+
+                # if true, forward the user to the login form instead of redirecting
+                #use_forward: false
+
+                # login success redirecting options (read further below)
+                always_use_default_target_path: true
+                default_target_path: dashboard
+                target_path_parameter: _target_path
+                #use_referer: true
+
+                # login failure redirecting options (read further below)
+                #failure_path: login_failure_route_name
+                #failure_forward: true
+                #failure_path_parameter: _failure_path
+                #failure_handler: some.service.id
+                #success_handler: some.service.id
+
+                # field names for the username and password fields
+                #username_parameter: _username
+                #password_parameter: _password
+
+                # csrf token options
+                csrf_parameter: _csrf_token
+                csrf_token_id: authenticate
+                #csrf_token_generator: my.csrf_token_generator.id
+
+                # by default, the login form *must* be a POST, not a GET
+                #post_only: true
+                remember_me: true
+
+                # by default, a session must exist before submitting an authentication request
+                # if false, then Request::hasPreviousSession is not called during authentication
+                #require_previous_session: true
+            # activate different ways to authenticate
+
+            # http_basic: true
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+
+            # form_login: true
+            # https://symfony.com/doc/current/security/form_login_setup.html
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    #access_rules: ~
+    access_control:
+        #- { path: ^/$, roles: ROLE_ADMIN }
+        - { path: ^/api/close, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/recursos/*.+, roles: [ROLE_ADMIN,ROLE_SOLICITANTE,ROLE_ALMACEN,ROLE_MENSAJERO,ROLE_SUPERVISOR] }
+        - { path: ^/dashboard, roles: [ROLE_ADMIN,ROLE_SOLICITANTE,ROLE_ALMACEN,ROLE_MENSAJERO,ROLE_SUPERVISOR] }
+        - { path: ^/areas, roles: ROLE_ADMIN }
+        - { path: ^/areas/.+$, roles: ROLE_ADMIN }
+        - { path: ^/usuarios, roles: [ROLE_ADMIN,ROLE_SOLICITANTE,ROLE_SUPERVISOR] }
+        - { path: ^/usuarios/.+$, roles: [ROLE_MENSAJERO, ROLE_ADMIN, ROLE_SUPERVISOR, ROLE_ALMACEN, ROLE_SOLICITANTE]  }
+        - { path: ^/profile, roles: [ROLE_MENSAJERO, ROLE_ADMIN, ROLE_SUPERVISOR, ROLE_ALMACEN, ROLE_SOLICITANTE] }
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_MENSAJERO, ROLE_SUPERVISOR, ROLE_ALMACEN, ROLE_SOLICITANTE]
+        ROLE_SUPERADMIN: ROLE_ADMIN

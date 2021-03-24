@@ -1,0 +1,188 @@
+{% extends 'base.html.twig' %}
+{% block title %}Nueva solicitud de Historia Clínica{% endblock %}
+{% block body %}
+
+<div class="mai-wrapper mai-clinica">
+        <div class="main-content container">
+            <div class="row">
+                <div class="col-sm-12">
+				<h4 class=" badge-pill badge-danger px-4 py-2 ">Solicitud de Historia Clínica</h4>
+		<form id="form" method="post" action="{{ path('realizarnuevasolicitud') }}" novalidate="">
+
+			<div class="panel panel-default">
+				<div class="panel-heading panel-heading-divider">
+					Datos de solicitud
+					<span class="panel-subtitle">Ingresa todos los datos y el destino requerido </span>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row">
+						<label class="col-3 col-form-label text-right">Sede</label>
+						<div class="col-6">
+							<select id="sede" name="sede" required="required" class="form-control">
+							<option value="" selected="selected">Seleccione una SEDE</option>
+							<option value="01">SAN ISIDRO</option>
+							<option value="02">LA MOLINA</option>
+							<option value="04">Torre Dr. Fleck</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-3 col-form-label text-right">Zona</label>
+						<div class="col-6">
+							<select id="codzona" name="codzona" required="required" class="form-control">
+							<option value="" >Seleccione la zona de entrega </option>
+							{% for areas in areas %}
+							<option value="{{ areas.codzona }}" >{{ areas.nombre }}</option>
+							{% endfor %}
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-3 col-form-label text-right">Consultorio</label>
+						<div class="col-6">
+							<select id="consultorio" name="consultorio" required="required" class="form-control">
+							<option value="" >Seleccione el consultorio de entrega </option>
+							{% for consultorios in consultorios %}
+							<option value="{{ consultorios.idusuario }}-{{ consultorios.nombre }}" >{{ consultorios.nombre }}</option>
+							{% endfor %}
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-3 col-form-label text-right">Médico</label>
+						<div class="col-6">
+							<select id="codmedico" name="codmedico" required="required" class="form-control">
+							<option value="" >Seleccione el médico solicitante </option>
+							{% for doctores in doctores %}
+							<option value="{{ doctores.idusuario }}-{{ doctores.nombre }}" >{{ doctores.nombre }}</option>
+							{% endfor %}
+							</select>
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-3 col-form-label text-right">Solicitud</label>
+						<div class="col-3">
+							<select id="codtipopedido" name="codtipopedido" required="required" class="form-control">
+							<option value="P">Programada </option>
+							<option value="N">No Programada </option>
+							</select>                     
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-3 col-form-label text-right">Reprogramar</label>
+						<div class="col-3">
+							<select id="anulado" name="anulado" required="required" class="form-control">   
+							<option value="0">No reprogramado </option>
+							<option value="1">Si reprogramar </option>
+							<option value="2">Anular solicitud </option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-3 col-form-label text-right">Placa</label>
+						<div class="col-3">
+							<select id="placa" name="placa" class="form-control">
+							<option value="0">No requiere </option>
+							<option value="1">Si requiere  </option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-3 col-form-label text-right">Historia</label>
+						<div class="col-3">
+							<input id="codhistoria" name="codhistoria" class="form-control" placeholder="HC-0000" data-parsley-required-message="Ingresa un código" type="text">      
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-3 col-form-label text-right">Codigo de paciente</label>
+						<div class="col-3">
+							<input id="codpaciente" name="codpaciente" required="required" class="form-control" placeholder="0000" data-parsley-required-message="Ingresa un código de paciente" type="text">      
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-3 col-form-label text-right">F. Entrega</label>
+						<div class="col-3">
+							<input id="fechapedido" name="fechapedido" required="required" class="form-control" placeholder="00/00/2018 " type="text" data-parsley-required-message="Ingresa una fecha" autoComplete="off">                     
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-3 col-form-label text-right">Hora</label>
+						<div class="col-3">
+							<select id="horapedido" name="horapedido" required="required" class="form-control">
+							<option value="" selected="selected">Seleccione la hora</option>
+							<option value="8:00:00">8:00 AM</option>
+							<option value="9:00:00">9:00 AM</option>
+							<option value="10:00:00">10:00 AM</option>
+							<option value="11:00:00">11:00 AM</option>
+							<option value="12:00:00">12:00 AM</option>
+							<option value="13:00:00">1:00 PM</option>
+							<option value="14:00:00">2:00 PM</option>
+							<option value="15:00:00">3:00 PM</option>
+							<option value="16:00:00">4:00 PM</option>
+							<option value="17:00:00">5:00 PM</option>
+							<option value="18:00:00">6:00 PM</option>
+							<option value="19:00:00">7:00 PM</option>
+							<option value="20:00:00">8:00 PM</option>
+							<option value="21:00:00">9:00 PM</option>
+							<option value="22:00:00">10:00 PM</option>
+							<option value="23:00:00">11:00 PM</option>
+							</select>
+						</div>
+					</div>
+					<div id="tbl_areas">
+					</div>
+					<div class="form-group row pt-5 pb-5">
+						<div class="col-3">
+						</div>
+						<div class="col-6 ">
+							<input id="dnuevo" name="dnuevo" value="0" type="hidden">
+							<input id="idcita" name="idcita" value="0" type="hidden">
+							<button type="submit" class="btn btn-danger btn-lg px-5">REGISTRAR SOLICITUD</button>
+							<a class="btn btn-secondary btn-lg px-5 " href="/agenda/">CANCELAR</a>
+							<p class="msg"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+			</div>
+    	</div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+{% block javascript %}
+
+<script>
+	$(document).ready(function(){
+		App.init();
+		//App.dataTables();
+        App.menuActive(1,2);
+		$('form').parsley();
+        $( "#fechapedido" ).datepicker({
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'dd/mm/yy'
+		});
+		$("form").ajaxForm({
+			"datatype":"json",
+			"success": function(responseText, statusText, xhr, $form){
+				console.log(responseText.msg);
+				if( /(requerido)$/.test(responseText.msg) ){
+					swal("Error!", responseText.msg, "error");
+				}else if(/(no)/.test(responseText.msg)){
+					swal("Error!", responseText.msg, "error");
+				}else{
+					swal("Enviado!", responseText.msg, "success");
+					$("#form")[0].reset();
+					location.reload();
+				}
+			}
+		});
+	});
+</script>
+
+{% endblock %}

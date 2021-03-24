@@ -1,0 +1,133 @@
+<form id="aceptar_solicitud" action="{{ path("aceptar_solicitud") }}" method="POST">
+
+				  <table id="tableHome" class="table table-striped- table-hover ">
+                    <thead>
+                      <tr>
+											 <th style="width:20%;">Responsable</th>	
+                        <th style="width:20%;">Paciente</th>												
+                        <th style="width:15%;"> H. Clínica </th>
+                        <th style="width:20%;">Z. Entrega</th>												
+                        <th style="width:15%;">F. Cita</th>
+												<th style="width:5%;" data-orderable="false">
+                          <label class="custom-control custom-control-sm custom-checkbox has-danger">
+                            <input id="check-all" type="checkbox" class="custom-control-input"><span class="custom-control-indicator custom-control-color-"></span>
+                          </label>
+                        </th>
+
+											  <!-- DATOS PARA EXPORTAR -->
+												<th class="content-hide">Cod. Solicitud</th>
+												<th class="content-hide">Cod. Paciente</th>
+												<th class="content-hide">Paciente</th>
+												<th class="content-hide">Sede</th>
+												<th class="content-hide">HC</th>
+												<th class="content-hide">Tipo de solicitud</th>
+												<th class="content-hide">Tipo HC</th>
+												<th class="content-hide">Caja</th>
+												<th class="content-hide">Zona de entrega</th>
+												<th class="content-hide">Origen de pedido</th>
+												<th class="content-hide">Fecha de registro</th>
+												<th class="content-hide">Fecha de cita </th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+
+					{% for item in solicitudes %}
+											<tr class="online ondanger" data-paciente="{{ item.codpaciente }}">
+												<td class="cell-detail ondanger-">
+													<span>
+													{# {{ loop.index }} -  #}
+													<span>{{ item.responsablec|title }}</span>					
+												<span class="cell-detail-description">{{ origen_pedido(item.dnuevo) }} :	RF2-{{ item.idsolicitud }}	 </span>
+
+												</td>
+											<td class="cell-detail ondanger-">
+													<span>
+													{# {{ loop.index }} -  #}
+
+														<span class="text-capitalize">{{ nombre_paciente(item.codpaciente)|lower[:15] }}</span>
+													<span class="cell-detail-description">Tipo: {{ tipo_pedido(item.codtipopedido)|title }}</span>
+													</td>
+												
+												<td class="cell-detail">
+													<span>HC{{ formato_hc(item.idhc) }}-{{ formato_folio(item.folio) }} </span>
+													{% set tipohc = ubi_archivo(item.idhc, item.codsede, item.folio, 'estado') %}	
+													{% set caja = ubi_archivo(item.idhc, item.codsede, item.folio, 'caja') %}	
+													{% if tipohc is empty %}
+													<span class="cell-detail-description text-danger">Sin archivo físico</span>
+													{% else %}											
+													<span class="cell-detail-description">{{ tipo_historia(tipohc)}}  / Caja: {{ caja }}</span>
+													{% endif %}	
+												</td>
+											<td class="cell-detail">
+												<span>{{ referencia(item.codzona)|capitalize[:20] }} </span>
+												<span class="cell-detail-description"> {{nombre_sede(item.codsede)}}</span>											
+											</td>
+                      {# <td class="cell-detail">
+												<span>{{ item.registro|date('h:i a') }}</span>
+												<span class="cell-detail-description">{{ item.registro|date('d') }} de {{ nombre_de_meses(item.registro|date('m')) }}</span>
+											</td>  #}
+											<td class="cell-detail">
+												<span class="no-wrap" >{{ item.horapedido|date('h:i a') }}</span>
+												<span class="cell-detail-description hora">{{ item.fechapedido|date('d') }} de {{ nombre_de_meses(item.fechapedido|date('m')) }}</span>
+											</td>
+						  				<td>
+													{% if tipohc is not empty %}
+                          <label class="custom-control custom-control-sm custom-checkbox has-danger">
+                            <input type="checkbox" class="custom-control-input" value="{{ item.idsolicitud }}" name="solicitud[{{ loop.index0 }}][idsolicitud]">
+														<span class="custom-control-indicator custom-control-color"></span>
+														<input type="hidden" value="{{ app.user.idusuario }}" name="solicitud[{{ loop.index0 }}][user]" >
+                          </label>
+													{% endif %}	
+                      </td>
+
+
+												<td class="content-hide">
+														RF2-{{ item.idsolicitud }}												
+												</td>
+												<td class="content-hide">
+													{{ item.codpaciente }}												
+												</td>
+												<td class="content-hide">
+														{{ nombre_paciente(item.codpaciente)|title }}
+												</td>
+													<td class="content-hide">
+													{{ nombre_sede(item.codsede) }}
+												</td>
+												<td class="content-hide">
+													HC{{ formato_hc(item.idhc) }}-{{ formato_folio(item.folio) }}
+												</td>
+												<td class="content-hide">
+													{{ tipo_pedido(item.codtipopedido)|title }}
+												</td>
+												<td class="content-hide">
+													{{ tipo_historia(tipohc)}} 
+												</td>
+												<td class="content-hide">
+													{{ caja }}
+												</td>
+												<td class="content-hide">
+													{{ referencia(item.codzona) }}
+												</td>
+												<td class="content-hide">
+													{{ origen_pedido(item.dnuevo)}}		
+												</td>
+												<td class="content-hide">
+													{{ item.registro|date('d/m/Y h:i a') }} 
+												</td>
+												<td class="content-hide">
+													{{ item.fechapedido|date('d/m/Y h:i a') }}
+												</td>											
+						 					</tr>
+					{% endfor %}
+				</tbody>
+				</table>
+				<div class="row">
+						<div class="text-left col-sm-12 px-3">
+							<div class="text-right">
+										<button type="submit" class="btn btn-space btn-danger btn-sm ml-0 mt-3 px-5 iniciar-servicio">ATENDER SOLICITUD / BUSQUEDA</button>
+									</div>
+						</div>
+						</div>
+
+		</form>

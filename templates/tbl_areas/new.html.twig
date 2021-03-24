@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+{% block title %}Agregar zona{% endblock %}
+{% block body %}
+<div class="mai-wrapper mai-clinica">
+        <div class="main-content container">
+            <div class="row">
+                <div class="col-sm-12">		
+				<h4 class=" badge-pill badge-danger px-4 py-2 ">Nueva zona</h4>				
+				 {{ include('tbl_areas/_form.html.twig') }}			 
+                </div>
+            </div>
+        </div>
+</div>	
+{% endblock %}
+{% block javascript %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+           /* $('#tbl_areas > div').addClass("form-group row")
+            $('#tbl_areas > div > label').addClass("col-3 col-form-label text-right")
+		   $('#tbl_areas > div > input,select').addClass("col-6 form-control")*/
+            //formVal()   
+			 App.init();
+			App.formElements();
+			App.menuActive(1,7);
+            $('form').parsley(); 
+        })
+			/*
+        function formVal(){
+            $("#form").validate({
+                rules: {				
+                    name:{
+                        required: true,
+                        minlength: 3
+                    },
+                    lastname:{
+                        required: true,
+                        minlength: 3
+                    },
+                    email:{
+                        required: true,
+                        email:true
+                    },
+                    dni:{
+                        number: true,
+                        required: true,
+                        minlength: 8
+                    },			
+                    day:{
+                        required: true
+                    },
+                    month:{          
+                        required: true
+                    },
+                    year: {
+                        required: true,
+                        range: [1900, 2015]
+                    }
+                },
+                messages: {
+                    name: "Ingresa tu nombre",
+                    lastname: "Ingresa tus apellidos",                       
+                    email: "Ingresa un correo electrónico valido",
+                    dni: "Ingresa el número correcto de tu DNI",
+                    day: "Ingresa tu día de nacimiento",
+                    month: "Ingresa el mes de tu nacimiento",
+                    year: "Selecciona el año de tu nacimiento"
+                }
+            });
+			}*/
+    </script>
+{% endblock %}

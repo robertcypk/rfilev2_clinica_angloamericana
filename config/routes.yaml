@@ -1,0 +1,63 @@
+index:
+    path: /
+    controller: App\Controller\SecurityController:login
+login_check:
+    path: /login_check
+logout:
+    path: /logout
+dashboard:
+    path: /dashboard/{estado}
+    controller: App\Controller\DashboardController:index
+    defaults:
+        estado: 1
+paises:
+    path: /paises
+    controller: App\Controller\RecursosController:paises
+departamento:
+    path: /departamento/{pais}
+    controller: App\Controller\RecursosController:departamento
+    defaults:
+        pais: default
+    requirements:
+        pais: '\w+'
+provincia:
+    path: /provincia/{pais}/{departamento}
+    controller: App\Controller\RecursosController:provincia
+    defaults:
+        pais: default
+        departamento: 0
+distrito:
+    path: /distrito/{pais}/{provincia}
+    controller: App\Controller\RecursosController::distrito
+    defaults:
+        pais: default
+        provincia: 0
+
+pacientes:
+    path: /pacientes/lista/{pagina}
+    controller: App\Controller\PacientesController::index
+    defaults:
+        pagina: 0
+
+agenda:
+    path: /agenda/lista/{pagina}
+    controller: App\Controller\AgendaController::index
+    defaults:
+        pagina: 0
+
+reportes:
+    path: /reportes/{pagina}
+    controller: App\Controller\ReportesController::index
+    defaults:
+        pagina: 0
+reportesusuarios:
+    path: /reportes-usuarios/{pagina}
+    controller: App\Controller\ReportesController::reportesusuarios
+    defaults:
+        pagina: 0
+validacion:
+    path: /api/validacion
+    controller: App\Controller\ApiController::validacion
+gestionardocumentos:
+    path: /almacen/gestionardocumentos
+    controller: App\Controller\AlmacenController::gestionardocumentos

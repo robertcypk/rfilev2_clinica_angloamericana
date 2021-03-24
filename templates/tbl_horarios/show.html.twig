@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TblHorarios{% endblock %}
+
+{% block body %}
+    <h1>TblHorarios</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Idhorario</th>
+                <td>{{ tbl_horario.idhorario }}</td>
+            </tr>
+            <tr>
+                <th>Dias</th>
+                <td>{{ tbl_horario.dias }}</td>
+            </tr>
+            <tr>
+                <th>Inicio</th>
+                <td>{{ tbl_horario.inicio }}</td>
+            </tr>
+            <tr>
+                <th>Fin</th>
+                <td>{{ tbl_horario.fin }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('tbl_horarios_index') }}">back to list</a>
+
+    <a href="{{ path('tbl_horarios_edit', {'idhorario': tbl_horario.idhorario}) }}">edit</a>
+
+    {{ include('tbl_horarios/_delete_form.html.twig') }}
+{% endblock %}

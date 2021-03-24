@@ -1,0 +1,257 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nuevo paciente{% endblock %}
+
+{% block body %}
+
+
+
+<div class="mai-wrapper mai-clinica">
+        <div class="main-content container">
+            <div class="row">
+                <div class="col-sm-12">		
+				
+				<h4 class=" badge-pill badge-danger px-4 py-2 ">Nuevo paciente</h4>
+				
+				 <form name="tbl_usuarios" method="post" enctype="multipart/form-data" novalidate="">
+
+
+<div class="panel panel-default">
+	<div class="panel-heading panel-heading-divider">
+		Datos personales
+		<span class="panel-subtitle">Ingresa todos los datos solicitados del paciente </span>					
+	</div>	
+	<div class="panel-body">
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Nombre</label>
+			<div class="col-6">                      
+				<input id="tbl_usuarios_nombre" name="tbl_usuarios[nombre]" required="required" class="form-control" data-parsley-required-message="Ingresa el nombre(s)" type="text">                     
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Apellido paterno</label>
+			<div class="col-6">                      
+				<input id="tbl_usuarios_apellidos" name="Appaterno" required="required" class="form-control" data-parsley-required-message="Ingresa el apellido" type="text">                     
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Apellido materno</label>
+			<div class="col-6">                      
+				<input id="tbl_usuarios_apellidos" name="Apmaterno" required="required" class="form-control" data-parsley-required-message="Ingresa el apellido" type="text">                     
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Tipo identidad</label>
+			<div class="col-4">
+				<select id="tbl_usuarios_status" name="tipoIdentidad" required="required" class="form-control custom-select col-6" data-parsley-required-message="Seleccione el tipo de documento">
+				<option value="" selected="selected">Seleccione la identidad</option>
+				<option value="CE">Carnet extranjería</option>
+				<option value="PAS">Pasaporte</option>
+				<option value="CD">Carnet diplomático</option>
+				<option value="LC">Licencia de conducir </option>
+				<option value="CI">Carnet de identidad </option>
+				<option value="DIE">Documento de identidad de extranjero </option>
+				<option value="DTM">Documento temporal del menor </option>
+				<option value="RN">Recién nacido </option>
+				<option value="PN"> Partida de nacimiento</option>
+				<option value="LM"> Libreta militar</option>
+				<option value="N.A.">Numero administrativo</option>
+				</select>
+			</div>
+		</div> 
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">N° identidad</label>
+			<div class="col-4">                      
+				<input id="tbl_usuarios_dni" name="identidad" required="required" class="form-control" data-parsley-required-message="Ingresa el N° de identidad" type="text">                     
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Email</label>
+			<div class="col-6">
+				<input id="tbl_usuarios_email" name="email" required="required" class="form-control" data-parsley-required-message="Ingrese el email del usuario" type="email">
+			</div>
+		</div>
+		
+		
+	</div>
+</div>
+
+
+
+<div class="panel panel-default">
+	<div class="panel-heading panel-heading-divider">
+		Datos domiciliarios
+		<span class="panel-subtitle">Ingresa los datos personales de localización </span>						
+	</div>	
+	<div class="panel-body">
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">País</label>
+			<div class="col-4">                      
+				<select id="tbl_usuarios_codigopais" name="tbl_usuarios[codigopais]" class="form-control custom-select select2 " required="required" data-parsley-required-message="Selecciona el país" tabindex="-1" aria-hidden="true"><option value="">Seleccione un pais</option></select>                     
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Departamento</label>
+			<div class="col-4">                      
+				<select id="tbl_usuarios_departamento" name="departamento" class="form-control custom-select col-6"></select>                     
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Provincia/Localidad</label>
+			<div class="col-4">                      
+				<select id="tbl_usuarios_provincia" name="localidad" class="form-control custom-select col-6"></select>                     
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Distrito</label>
+			<div class="col-4">                      
+				<select id="tbl_usuarios_distritos" name="distrito" class="form-control custom-select col-6"></select>                     
+			</div>
+		</div>
+		<input id="codUbigeo" name="codUbigeoO" value="" type="hidden">
+		
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Dirección</label>
+			<div class="col-6">                      
+				<input id="tbl_usuarios_direccion" name="direccion" required="required" class="form-control" data-parsley-required-message="Ingresa la dirección" type="text">                     
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">N° Piso</label>
+			<div class="col-2">                      
+				<input id="tbl_usuarios_celular" name="ndireccion" required="required" class="form-control" data-parsley-required-message="Ingresa el numero " type="number">                      
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Cod. Postal</label>
+			<div class="col-2">                      
+				<input id="tbl_usuarios_telefono" name="codPostal" required="required" class="form-control" data-parsley-required-message="Ingresa el código postal" type="number">                     
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Teléfono</label>
+			<div class="col-4">                      
+				<input id="tbl_usuarios_telefono" name="tbl_usuarios[telefono]" required="required" class="form-control" data-parsley-required-message="Ingresa el teléfono" type="phone">                     
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Celular</label>
+			<div class="col-4">                      
+				<input id="tbl_usuarios_celular" name="tbl_usuarios[celular]" required="required" class="form-control" data-parsley-required-message="Ingresa el numero celular" type="phone">                     
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+
+
+
+<div class="panel panel-default">
+	<div class="panel-heading panel-heading-divider">Credenciales
+		<span class="panel-subtitle">Registra los datos de identificación y gestion  </span>
+	</div>
+	
+	<div class="panel-body">
+		
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Sede</label>
+			<div class="col-6">                      
+				<select id="tbl_areas_sede" name="tbl_areas[sede]" required="required" class="form-control">
+					<option value="" selected="selected">Seleccione una SEDE</option>
+					<option value="SAN ISIDRO">SAN ISIDRO</option><option value="LA MOLINA">LA MOLINA</option>
+				</select>                     
+			</div>
+		</div>
+
+		
+		
+		
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Cod. Paciente</label>
+			<div class="col-4">
+				
+				<input id="tbl_usuarios_password" name="codPaciente" placeholder="PC-00000" required="" class="form-control" data-parsley-required-message="Ingrese el código de Paciente" type="text">
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Cod. Historia Clínica</label>
+			<div class="col-4">
+				<input name="codHC" value="" class="form-control" placeholder="HC-00000" required=""  data-parsley-required-message="Ingrese el código de Historia Clínica" type="text">
+				<input id="tipoHC" name="tipoHC" value="1" type="hidden">
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Cod. de Conyuge</label>
+			<div class="col-4">
+				<input name="codHC" value="" class="form-control" placeholder="CC-00000" required=""  data-parsley-required-message="Ingrese el código de Conyuge" type="text">
+				
+			</div>
+		</div>
+		
+		
+		<div class="row pt-5 pb-5">
+			<div class="col-3">
+				<label class="custom-control custom-checkbox mt-2">
+				</label>
+			</div>
+			<div class="col-6">
+				<p class="text-left">
+								
+					<button type="submit" class="btn btn-danger btn-lg px-5" data-toggle="modal" data-target="#exampleModal">REGISTRAR PACIENTE</button>
+					<a class="btn btn-secondary btn-lg px-5 " href="{{ path('pacientes') }}">CANCELAR</a>
+					
+					
+				</p>
+				
+				<p class="msg"></p>
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+
+</form>					 
+                </div>
+            </div>
+        </div>
+
+
+	</div>
+{% endblock %}
+{% block javascript %}
+
+<script>
+	$(document).ready(function(){
+		App.init();
+		//App.dataTables();
+        App.menuActive(1,4);
+		$('form').parsley();
+        $( "#fechapedido" ).datepicker({
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'dd/mm/yy'
+		});
+		$("form").ajaxForm({
+			"datatype":"json",
+			"success": function(responseText, statusText, xhr, $form){
+				console.log(responseText.msg);
+				if( /(requerido)$/.test(responseText.msg) ){
+					swal("Error!", responseText.msg, "error");
+				}else if(/(no)/.test(responseText.msg)){
+					swal("Error!", responseText.msg, "error");
+				}else{
+					swal("Enviado!", responseText.msg, "success");
+					$("#form")[0].reset();
+					location.reload();
+				}
+			}
+		});
+	});
+</script>
+
+{% endblock %}

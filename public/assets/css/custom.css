@@ -1,0 +1,487 @@
+.pleft { float: left; position: absolute}
+.fontMedium {font-size: 2.07692rem !important;}
+/* .project-item-user {flex: 0 1 25%;} */
+/* .project-item-date {flex: 0 1 15%;} */
+.project-item-actions2 {flex: 0 1 10%;}
+.wFlex-10 {flex: 0 1 10%;}
+.wFlex-5 {flex: 0 1 5%;}
+
+
+.txt-white, a.txt-white, a.txt-white:active, a.txt-white:hover, a.txt-white:visited {color: white}
+.ui-datepicker{
+z-index: 999 !important;
+
+}
+.dropdown-menu {
+	
+    z-index:1001;
+   overflow: hidden;
+}
+
+	 .mai-user-nav > .nav-item.dropdown.show > a .angle-down::after, .mai-user-nav > .nav-item.dropdown.show:hover > a .angle-down::after
+	 {
+		  border-bottom: 10px solid transparent;
+		 
+		 }
+	 
+:root{
+    --color: #9d773d;
+    
+    --background: #f4f4f4;
+    --color-items: orange;
+
+    --dropdown-header: #ce0635;
+    --dropdown-header-hover: #323232;
+}
+
+.icon-next { 
+    font-size: 35px;   
+    line-height: 0; 
+    position: relative;
+    top: 10px;
+}
+
+select[multiple] {
+    height: 300px;
+}
+.dt-button{
+    background: white;
+
+    
+}
+.btn-reset {
+    background: white;
+    border-radius: 0px;
+    padding: 15px 10px;
+    color: inherit;
+}
+.border-2 { border-width:2px; }
+.select-gray {
+    height: 33px;
+    padding: 0 20px;
+    background: gray;
+    color: white;
+    border: 0px solid white;
+}
+/************************* MODALS *************************/
+
+.modal .modal-body button{
+    box-sizing: border-box;
+    height: 40px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    width: 104px;
+    padding: 10px 20px;
+    margin-right: 20px;
+}
+
+/************************* TABLES *************************/
+.table tbody tr.ondanger td:first-child {
+    border-left-color: #ec073d !important;
+    padding-left: 17px; 
+}
+
+
+.table tbody td.ondanger  {
+    border-left-color: red !important;
+}
+
+.content-hide {
+    display: none;
+}
+
+/************************* LOGIN **************************/
+
+.color-description-login{
+    color: var(--color) !important;
+    font-size: 1.05rem !important;
+    opacity: 1 !important;
+    font-weight: 200 !important;
+}
+.description-login{
+    margin-top: 48px;
+    font-size: 2.5rem;
+    color: white;
+    font-weight: 300;
+    color: var(--color);
+}
+.intro-background{
+    background-color:  #E5E5E5 !important;
+    background: url(../img/clinica/fondo1.png);
+    background-repeat: no-repeat;
+    background-position: 0 -1px;	   
+}
+.form-background{
+    background-color: #E5E5E5 !important;
+    background: url(../img/clinica/fondo2.png);
+    background-repeat: repeat-y;
+    background-position: -10px;
+    background-size: calc(100% + 12px);	
+}
+.form-message {
+	padding-top: 25px !important;	
+}
+.form-background .logo-clinica{
+    width: 340px;
+    height: 70px;
+}
+@media (max-width: 575px){
+    .splash-container {
+        background-color: #E5E5E5 !important;
+        padding: 0 !important;
+    }
+	
+}
+
+.input-group-login{
+    border:none !important;
+}
+.input-group-login input{
+    color: #000 !important;
+    height: 38px !important;
+    background-color: #fff !important;
+    text-indent: 10px;
+    font-weight: 300 !important;
+    font-size: 15px !important;
+    font-family: "Open Sans", sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.login-submit-form{
+    padding-top: 5px;
+}
+.login-submit-form button{
+    cursor: pointer;
+    border: 0 !important;
+    padding: 15px !important;
+    color: #fff;
+	background: #a37f48;
+    font-family: "Open Sans", sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.tools .login-forgot-password{
+    padding-right: 1px;
+}
+.tools .login-remember{
+    padding-left: 1px !important;
+}
+.tools .login-remember .custom-control-indicator{
+    right: 2px;
+    top: -3px;
+    height: 25px;
+    width: 25px;   
+    border: 3px solid grey;
+}
+
+.tools .login-remember .custom-control-indicator:before{
+    font-size: 24px !important  ;
+    right: 3px !important;
+}
+.tools .color-grey{
+    font-size: 1.05rem !important;
+    color: grey !important;
+    opacity: 1 !important;
+    font-weight: 200 !important;
+}
+.txt-grey {
+	color: grey;
+	
+}
+
+@media screen and (max-width: 500px){
+    .logo-clinica{
+        /* width: 280px !important; */
+        /* height: 60px !important; */
+		width: 100% !important;
+    height: auto !important;
+	
+    }
+}
+
+/*********************** HEADER **************************/
+
+.clinica-header{
+    background-color: #ce0635;
+    
+}
+.clinica-header .container{
+    align-items: center
+}
+.clinica-header .container > *{
+    height: 72px;
+}
+.clinica-header .nav-item{
+    padding-top: 5px;
+}
+.clinica-header .dropdown-item:hover{
+    background-color: var(--dropdown-header-hover) !important;
+}
+.clinica-header .nav-info-user .user-name{
+    font-size: 1rem;
+    margin-right: 5px;
+}
+.clinica-header .nav-info-user img{
+    border: 2px solid #fff;
+    width: 35px;
+    height: 35px;
+    max-width: 35px !important;
+    max-height: 35px !important;
+    border-radius: 50% !important;
+    background: white;
+} 
+
+.mai-top-header .navbar-brand{
+    background-image: url(../img/clinica/hd_logo.png);
+    background-size: 110px;
+    height: 60px;
+}
+
+.main-logo{
+    position: absolute;
+    z-index: 1000;
+    right: 0;
+
+	top: 20px;
+    /* bottom: -111px; */
+
+}
+
+@media (max-width: 767px){
+    .main-logo{
+        display: none;
+    }
+}
+/*********************** NAV **************************/
+
+.mai-clinica .mai-sub-header{
+    background: rgb(244, 244, 244);
+}
+.mai-sub-header .navbar-nav > .nav-item.open > a, .mai-sub-header .navbar-nav > .nav-item.open:hover > a, .mai-sub-header .navbar-nav > .nav-item > .nav-link {
+    color: rgba(0, 0, 0, 0.90)
+}
+.mai-sub-header .navbar-nav > .nav-item > .nav-link:hover {
+    color: rgba(0, 0, 0, 0.90);
+}
+.mai-clinica .clinica-item span{
+    font-weight: 300;
+}
+.mai-nav-tabs-sub > .nav-item > .nav-link.active {
+    color: var(--color-items);
+}
+.nav-link.hover, .nav-link:hover {
+    color: var(--color-items);
+}
+.mai-nav-tabs-sub > .nav-item.parent.show > .nav-link {
+    color: var(--color-items);
+}
+.mai-nav-tabs-sub > .nav-item.parent > .nav-link:after{
+    color: grey !important;
+}
+.content-clinica .s7-cloud-download{
+    display: none !important;
+}
+.clinica-header .dropdown-menu{
+    background-color: var(--dropdown-header) !important;
+}
+.navbar-inverse .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.75);
+}
+.navbar-inverse .navbar-nav .nav-link:focus, .navbar-inverse .navbar-nav .nav-link:hover {
+    color: rgba(255, 255, 255, 0.90);
+}
+.mai-top-header .navbar-nav > .nav-item.dropdown .dropdown-menu > .dropdown-item {
+    color:rgba(255, 255, 255, 0.90)
+}
+.mai-user-nav .user-w-100{
+    width:100%;
+}
+
+@media (max-width: 767px){
+    .mai-user-nav .nav-item{
+        padding-top: 0;
+    }
+    .mai-sub-header .navbar-nav > .nav-item.open > a, .mai-sub-header .navbar-nav > .nav-item.open:hover > a, .mai-sub-header .navbar-nav > .nav-item > .nav-link {
+        color: rgba(250, 250, 250, 0.90)
+    }
+    .mai-sub-header .navbar-nav > .nav-item > .nav-link:hover {
+        color: rgba(250, 250, 250, 0.90);
+    }
+}
+
+
+a:focus, a:hover{
+    color: #545454;
+}
+
+/******************************************************************************/
+
+.clinica-description-item{
+    display:flex;
+    width: 100%;
+    padding-left:23px;
+    padding-right: 23px;
+    margin-bottom: 10px;
+}
+@media screen and (max-width: 576px){
+    .clinica-description-item{
+        display: none;
+    }
+}
+
+.item-title{
+    width:20%;
+   
+}
+.clinica-list-patient .color-center{
+    color: var(--call-center);
+}
+.clinica-list-patient .project-item-progress .urgencia{
+    color: red;
+}
+.retrasado{
+    color: orange;
+}
+
+/****************************  MAIN CONTENT *************************/
+
+.main-content .clinica-users-panel{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.main-content .clinica-users-panel .clinica-heading h3{
+    margin-bottom: 0;
+    color: #545454;
+}
+.main-content .clinica-users-panel .clinica-heading p{
+    margin-bottom: 0;
+    color: #545454;
+}
+
+.main-content .clinica-users-panel .button a{
+    font-family: "Open Sans", sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.mai-clinica .panel-table .table tbody > tr{
+    background: #fff !important;
+}
+.mai-clinica .panel-table .table tbody > tr:hover {
+    background: rgba(0, 0, 0, 0.075) !important;
+}
+.mai-clinica .panel-table .table tbody tr .actions{
+    text-align: center;
+}
+.mai-clinica .panel-table .table tbody tr .actions > a > span{
+    margin-left: 5px;
+    font-size: 1.5rem;
+    color: grey;
+    transition: .3s all;
+}
+.mai-clinica .panel-table .table tbody tr .actions a span:hover{
+    color: orange;
+}
+.mai-clinica .panel-table .table tbody tr .actions .modal .delete {
+    display: flex;
+    justify-content: center;   
+}
+.mai-clinica .panel-table .table tbody tr .actions .modal .delete > *{
+    box-sizing: border-box;
+    height: 40px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    width: 104px;
+}
+.modal .delete button{
+    padding: 10px 20px;
+    margin-right: 20px;  
+}
+.modal .delete form button{
+    height: 40px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-right: 0;
+    width: 100%;
+}
+
+/*********************** NEW USER  *********************/
+
+.mai-clinica  .clinica-users-panel{
+    margin-bottom: 30px !important; 
+}
+
+form .form-group input{
+    height: 44px ;
+}
+form .form-group label{
+    /* height: 44px !important; */
+} 
+.main-content .panel-body form .form-group ul{
+    height: 44px !important;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+div.form-group{
+    /* margin-bottom: 24px !important; */
+}
+
+
+.border-green{
+    border-left-color: #2cc185 !important;
+}
+.border-orange{
+    border-left-color: rgb(255, 111, 0) !important;
+}
+.border-yellow{
+    border-left-color: rgba(255, 204, 0, 0.967) !important;
+}
+.border-red{
+    border-left-color: #ec073d !important;
+}
+.table tbody tr.row-dinamic td:first-child {
+    border-left-width: 7px;
+    border-left-color: #f4f4f4;
+}
+
+/*********************** NEW USER  *********************/
+.badge-0{
+    background-color: #eaebec;
+    border: 1px solid #eaebec;
+    color: #6f6d6d;
+    }
+    .badge-1{
+        background-color: #2cc185;
+        border: 1px solid #2cc185;
+        color: white;
+        }
+        .badge-2{
+            background-color: #ffba00;
+            border: 1px solid #ffba00;
+            color: white;
+            }
+            .badge-3{
+                background-color: #f9803e;
+                border: 1px solid #f9803e;
+                color: white;
+                }
+                .badge-4{
+                    background-color: #0e90ff;
+                    border: 1px solid #0e90ff;
+                    color: white;
+                    }
+                    .badge-5{
+                        background-color: #c553fa;
+                        border: 1px solid #c553fa;
+                        color: white;
+                        }
+                        .badge-6{
+                            background-color: #751fd6;
+                            border: 1px solid #751fd6;
+                            color: white;
+                            }
+                            .badge-7{
+                                background-color: #757678;
+                                border: 1px solid #757678;
+                                color: white;
+                                }
+                                .badge-8{
+                                    background-color: #c51313;
+                                    border: 1px solid #c51313;
+                                    color: white;
+                                    }

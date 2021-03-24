@@ -1,0 +1,54 @@
+{% extends "masterlogin.html.twig" %}
+{% block content %}
+  <div class="mai-wrapper mai-login">		
+			<div class="main-content container">
+				<div class="splash-container row">
+					<div class="col-sm-6 user-message intro-background">
+					</div>
+					<div class="col-sm-6 form-message form-background" style="background: #e5e5e5;">
+						<img src="{{ asset('assets/img/clinica/loclinica.jpg') }}" alt="logo" width="" height="" class="logo-img mb-2 logo-clinica" title="Clínica Angloamericana">
+						<p class="description-login">Gestión de<br>Historias Clínicas</p>
+						<form action="{{ path('login_check')}}" method="post">
+							<div class="form-group">
+								<div class="input-group input-group-login">
+									<input id="username" name="_username" type="text" placeholder="Email" autocomplete="off" class="form-control">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="input-group input-group-login">
+									<input id="password" name="_password" type="password" placeholder="Contraseña" class="form-control">
+								</div>
+							</div>
+							<div class="form-group login-submit login-submit-form" >
+								<button data-dismiss="modal" type="submit" class="btn btn-lg btn-login btn-block">Login</button>
+							</div>
+							<div class="form-group row login-tools tools-" style="margin-bottom: 35px;">
+								<div class="col-6 login-remember--">
+								<label class="custom-control custom-checkbox has-danger">
+									<input type="checkbox" class="custom-control-input"><span class="custom-control-indicator custom-control-color"></span><span class="custom-control-description txt-grey">Recordar</span>
+								</label>
+									
+								</div>
+								{# <div class="col-6 text-right login-forgot-password- "><a href="#" class="txt-grey">Recuperar acceso</a></div> #}
+								<div class="col-6 text-right login-forgot-password- text-danger">						
+								{% if error %}	
+										Credenciales incorrectos
+										{# {{ error.messageKey|trans(error.messageData, 'security') }}									 #}
+								{% endif %}
+								</div>
+							</div>
+							
+							
+						</form>
+					</div>
+					
+					<div class="col-12 pt-3 pb-3 small">
+					
+					Copyright {{ 'now'|date('Y') }} Ricoh Company, Ltd. All Rights Reserved.
+					</div>
+				
+				</div>
+				
+			</div>
+		</div>
+{% endblock %}

@@ -1,0 +1,197 @@
+{{ form_start(form) }}
+
+
+<div class="panel panel-default">
+	<div class="panel-heading panel-heading-divider">
+		Datos personales
+		<span class="panel-subtitle">Ingresa los datos requeridos </span>
+	</div>
+	<div class="panel-body">
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Nombre <span class="text-danger">*</span></label>
+			<div class="col-6">
+				{{ form_widget(form.nombre, {'attr': { 'data-parsley-required-message':'Ingresa el nombre'}} ) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Apellidos <span class="text-danger">*</span></label>
+			<div class="col-6">
+				{{ form_widget(form.apellidos, {'attr': { 'data-parsley-required-message':'Ingresa el apellido(s)'}}) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">DNI <span class="text-danger">*</span></label>
+			<div class="col-4">
+				{{ form_widget(form.dni, {'attr': { 'data-parsley-required-message':'Ingresa el DNI'}}) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Teléfono<span class="text-danger">*</span></label>
+			<div class="col-4">
+				{{ form_widget(form.telefono, {'attr': { 'data-parsley-required-message':'Ingresa el teléfono'}}) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Celular <span class="text-danger">*</span></label>
+			<div class="col-4">
+				{{ form_widget(form.celular, {'attr': { 'data-parsley-required-message':'Ingresa el numero celular'}}) }}
+			</div>
+		</div>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading panel-heading-divider">
+		Datos domiciliarios
+		<span class="panel-subtitle">Ingresa los datos personales de localización </span>
+	</div>	
+	<div class="panel-body">
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">País</label>
+			<div class="col-4">
+				{{ form_widget(form.codigopais, {'attr': {'id': 'pais','required':'required','data-parsley-required-message':'Selecciona el país'}}) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Departamento</label>
+			<div class="col-4">
+				{{ form_widget(form.departamento) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Provincia</label>
+			<div class="col-4">
+				{{ form_widget(form.provincia) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Distrito</label>
+			<div class="col-4">
+				{{ form_widget(form.distritos) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Direccion</label>
+			<div class="col-6">
+				{{ form_widget(form.direccion, {'attr': { 'data-parsley-required-message':'Ingresa la dirección'}}) }}
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="panel panel-default">
+	<div class="panel-heading panel-heading-divider">Avatar  <span class="panel-subtitle">Agrega una foto personal para el perfil de usuario</span></div>
+	<div class="panel-body">
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Imagen <span class="text-danger">*</span></label>
+			<div class="col-6">
+				{{ form_widget(form.imagen, { 'attr': {'id': form.vars.id, 'data-parsley-required-message':'Selecciona la imagen de tu avatar'} }) }}
+				<label for="{{ form.imagen.vars.id }}" class="btn btn-secondary btn-sm"> <i class="icon s7-upload"></i><span>Seleccionar imagen</span></label>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<div class="panel panel-default">
+	<div class="panel-heading panel-heading-divider">Permisos
+		<span class="panel-subtitle">Selecciona y asigna el Rol de funciones </span>
+	</div>
+	<div class="panel-body">
+	{% if is_granted("ROLE_ADMIN") %}
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Rol (Perfil) <span class="text-danger">*</span></label>
+			<div class="col-6">
+				{{ form_widget(form.rol, {'attr': { 'data-parsley-required-message':'Selecciona el ROL del usuario'}}) }}
+			</div>
+		</div>
+		{% else  %}
+		<div style="display:none;">
+		{{ form_widget(form.rol, {'attr': { 'data-parsley-required-message':'Selecciona el ROL del usuario'}}) }}
+		</div>
+		{% endif %}
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Area asignada <span class="text-danger">*</span></label>
+			<div class="col-6">
+				{{ form_widget(form.idarea, {'attr': { 'data-parsley-required-message':'Seleccione la zona de preferencia'}}) }}
+			</div>
+		</div>
+		{# 
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Medicos a cargo </label>
+			<div class="col-6"> 
+                      <select multiple="" class="form-control medicos_codigo_zona " name="tbl_usuarios[medicos][]" data-parsley-required-message="Selecciona el médico/usuario disponible">
+					  <option value="">...</option>
+                      </select>
+			</div>
+		</div> #}
+
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Horario <span class="text-danger">*</span></label>
+			<div class="col-6">
+				{{ form_widget(form.idhorario, {'attr': { 'data-parsley-required-message':'Seleccione el horario de atención'}}) }}			
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+
+
+<div class="panel panel-default">
+	<div class="panel-heading panel-heading-divider">Credenciales
+		<span class="panel-subtitle">Registra los datos de ingreso al sistema </span>
+	</div>
+	<div class="panel-body">
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Email <span class="text-danger">*</span></label>
+			<div class="col-6">
+				{{ form_widget(form.email, {'attr': { 'data-parsley-required-message':'Ingrese el email del usuario'}}) }}
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Estado <span class="text-danger">*</span></label>
+			<div class="col-6">
+				{{ form_widget(form.status, {'attr': { 'data-parsley-required-message':'Seleccione el estado del usuario'}}) }}
+			</div>
+		</div> 
+		
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Contraseña</label>
+			<div class="col-6">
+				
+				{{ form_widget(form.password, {'attr': { 'data-parsley-required-message':'Ingrese una contraseña para el usuario'}}) }}
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Repetir Contraseña</label>
+			<div class="col-6">
+				<input name="confirpassword" value="" class="form-control" type="password" data-parsley-equalto="#tbl_usuarios_password" data-parsley-equalto-message = "La contraseña ingresada no es igual " data-parsley-required-message = "Repita la contraseña">
+			</div>
+		</div>
+		
+		
+		<div class="row pt-5 pb-5">
+			<div class="col-3">
+				<label class="custom-control custom-checkbox mt-2">
+				</label>
+			</div>
+			<div class="col-6">
+				<p class="text-left">
+					<!-- <button type="submit" class="btn btn-danger btn-lg px-5">GUARDAR USUARIO</button>					 -->
+					<button type="submit" class="btn btn-danger btn-lg px-5"  data-toggle="modal" data-target="#exampleModal" >{{ button_label|default('REGISTRAR USUARIO') }}</button>
+					<a class="btn btn-secondary btn-lg px-5 " href="{{ path('tbl_usuarios_index') }}">CANCELAR</a>
+				</p>
+				<p class="msg"></p>
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+{{ form_end(form) }}

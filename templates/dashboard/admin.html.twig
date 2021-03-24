@@ -1,0 +1,72 @@
+		<div class="row">
+			<div class="col-md-7">
+				<div class="widget widget-fullwidth user-develop-chart">
+					<div class="widget-head">
+						<div class="tools">
+							<span class="icon s7-cloud-download"></span>
+							<span class="icon s7-refresh-2"></span>
+						</div>
+						<span class="title">Resumen de solicitudes</span>
+					</div>
+					<div class="widget-chart-container widget-clinica">
+						{# <div id="develop-chart-legend" class="legend-container"></div>
+						<div id="develop-chart" style="height: 225px;" class=""></div> #}
+						<div id="develop-chart-" style="height: 285px;" class="">
+							<canvas id="bar-chart"></canvas>
+						</div>
+						
+
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-5">
+				<div class="widget-indicators">
+					<div class="indicator-item">
+						<div class="indicator-item-icon">
+							<div class="icon">
+								<span class="s7-timer"></span>
+							</div>
+						</div>
+						<div class="indicator-item-value">
+							<span data-toggle="counter" data-end="{{ contadorderegistro('agendadehoy') }}" class="indicator-value-counter">0</span>
+							<div class="indicator-value-title">Hoy agendado</div>
+						</div>
+					</div>
+					<div class="indicator-item">
+						<div class="indicator-item-icon">
+							<div class="icon">
+								<span class="s7-date"></span>
+							</div>
+						</div>
+						<div class="indicator-item-value">
+							<span data-toggle="counter" data-end="{{ contadorderegistro('agendahoyadelante') }}" class="indicator-value-counter">0</span>
+							<div class="indicator-value-title">Solicitudes agendadas</div>
+						</div>
+					</div>
+					<div class="indicator-item">
+						<div class="indicator-item-icon">
+							<div class="icon">
+								<span class="s7-id"></span>
+							</div>
+						</div>
+						<div class="indicator-item-value">
+							<span data-toggle="counter" data-decimals="" data-end="{{ contadorderegistro('pacientes') }}" class="indicator-value-counter">0</span>
+							<div class="indicator-value-title">Pacientes registrados</div>
+						</div>
+					</div>
+
+					<div class="indicator-item">
+						<div class="indicator-item-icon">
+							<div class="icon">
+								<span class="s7-box1"></span>
+							</div>
+						</div>
+						<div class="indicator-item-value">
+							<span data-toggle="counter" data-decimals="" data-end="{{ contadorderegistro('total') }}" data-prefix="" class="indicator-value-counter">0</span>
+							<div class="indicator-value-title">Total solicitudes</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>

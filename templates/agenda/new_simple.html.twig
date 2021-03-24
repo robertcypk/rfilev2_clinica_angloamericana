@@ -1,0 +1,623 @@
+{% extends 'base.html.twig' %}
+{% block title %}Nueva solicitud de Historia Clínica{% endblock %}
+{% block body %}
+
+<div class="mai-wrapper mai-clinica">
+        <div class="main-content container">
+            <div class="row">
+                <div class="col-sm-12">
+				<h4 class=" badge-pill badge-danger px-4 py-2 ">Solicitud de Historia Clínica</h4>
+		<form id="form" method="post" action="" novalidate="">
+
+			<div class="panel panel-default">
+				<div class="panel-heading panel-heading-divider">
+					Datos de solicitud
+					<span class="panel-subtitle">Ingresa todos los datos y el destino requerido </span>
+				</div>
+				<div class="panel-body">
+                    <div class="form-group row toggle-search">
+						<label class="col-3 col-form-label text-right "> </label>
+
+						<div class="col-3">
+							<select id="search-type" class="form-control" >                                
+                                <option value="zoneNOMBRE">Apellidos y nombres</option>
+								<option value="zoneHC">Historia Clínica</option>
+                                <option value="zoneDOC">Nro. Documento</option>
+                            </select>
+						</div>
+
+			<div class="col-6">
+
+
+					</div>	
+					</div>
+
+					
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label text-right">Buscar paciente <span class="text-danger">*</span></label>
+						
+						{# ------------------------------------- #}
+						<div class="col-sm-9 row zoneHC" style="display:none"  >
+						<div class="col-sm-5" >
+                            <div class="input-group mb-2 ">
+                              	 <input type="text" class="form-control codHC2" placeholder="HC 0000000"><span class="input-group-btn">
+								 <button type="button" class="btn btn-secundary AddTag2">Buscar</button></span>
+                            </div>
+                         </div>
+                        <div class="col-sm-2 ">
+                            <div class="input-group  mb-2">
+                                <input type="number" id="folio" value="" name="folio" min="0" class="form-control " placeholder="Folio">
+                            </div>
+                        </div>
+                        <div class="col-sm-5 ">
+                            <span class="msj-error" style="font-size: 14px;">
+                            </span>
+                        </div>
+						</div>
+						{# ------------------------------------- #}
+						<div class="col-sm-9 row zoneNOMBRE"  >	
+						 <div class="col-sm-11 ">
+                            <div class="input-group  mb-2">
+								{# <input type="text" id="test3" value="" name="q"  class="form-control " placeholder="Apellidos y nombres"> #}
+                               <select id="test" name="q"  required="required" class="form-control" style="width:100%">
+									<option value="" >Seleccione el área solicitante </option>
+							</select>
+                            </div>
+                        </div>				
+							
+						</div>
+						{# ------------------------------------- #}
+						
+						<block class="col-sm-9 row zoneDOC" style="display:none" >
+						<div class="col-sm-5 " >
+                            <div class="input-group mb-2">
+                              	 <input type="text" class="form-control numDoc" placeholder="DOC 0000000"><span class="input-group-btn">--
+								 <button type="button" class="btn btn-secundary buscarDOC">Buscar</button></span>
+                            </div>
+                        </div>
+                       
+                        <div class="col-sm-7 ">
+                            <span class="msj-error-doc" style="font-size: 14px;">
+                            </span>
+                        </div>
+						</block>						
+						{# ------------------------------------- #}	
+                        
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label text-right">Pacientes <span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                        	<input id="tags" type="text" value="" class="form-control" >
+                        </div>
+                    </div>
+
+					<input id="sede" name="sede" value="{{ areas.sede|default("0") }}" type="hidden">
+                    
+                    <div class="form-group row">
+						<label class="col-3 col-form-label text-right">Zonas de entrega <span class="text-danger">*</span></label>
+						<div class="col-6">
+							<select id="codzona" name="codzona"  required="required" class="form-control select2" data-parsley-required-message="Selecciona el área de entrega" data-parsley-errors-container=".error-area">
+							<option value="" >Seleccione la zona </option>
+                            {% for areas in lstAreas %}								
+                            <option value="{{ areas.idarea }}" data-sede="{{ areas.sede }}" data-nomsede="{{ nombre_sede(areas.sede) | upper }}" data-codzona="{{ areas.codzona }}">{{ nombre_sede(areas.sede) | upper }}  - {{ areas.nombre }}</option>
+                            {% endfor %}
+							</select>
+							<div class="error-area"></div>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-3 col-form-label text-right ">Médico solicitante<span class="text-danger">*</span></label>
+						<div class="col-6">
+							<select id="codmedico" name="codmedico" required="required" class="form-control listamedicos" data-parsley-required-message="Selecciona el médico a cargo" data-parsley-errors-container=".error-medico">
+							<option value="" >Seleccione el médico  </option>
+							{% for doctores in doctores %}
+							<option value="{{ doctores.codmedico }}-{{ doctores.medico }}" >{{ doctores.medico }}</option>
+							{% endfor %}							
+							</select>
+							<div class="error-medico"></div>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-3 col-form-label text-right">Consideraciones </label>
+						{# <div class="col-3">
+							<select id="codtipopedido" name="codtipopedido" required="" class="form-control" data-parsley-required-message="Selecciona el tipo de solicitud">							
+							<option value="N">Extra programada</option>							
+							<option value="A">Anexo de documentos ó informes </option>
+							</select>
+						</div> #}
+						{# <input id="codtipopedido" name="codtipopedido" value="A" type="hidden"> #}
+
+					<div class="col-3">
+                      <label class="custom-control custom-checkbox mt-3">
+                        <input type="checkbox" value="1" id="placa" name="placa" class="custom-control-input" >
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">Requiere Placa</span>
+						
+                      </label>
+                    </div>
+
+					
+					<!-- <div class="col-2">
+                      <label class="custom-control custom-checkbox mt-3">
+                        <input type="checkbox" value="I" id="codtipopedido" name="codtipopedido" class="custom-control-input" >
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">Administrativo</span>
+						
+                      </label>
+                    </div> -->
+
+					
+					</div>
+					<div class="form-group row">
+						<label class="col-3 col-form-label text-right">Fecha pedido <span class="text-danger">*</span></label>
+						<div class="col-3">
+							<input id="date1" name="fechapedido" class="form-control" value="{{ "now"|date("d/m/Y") }}" type="text" autoComplete="off" required ="" data-parsley-errors-messages-disabled="false">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-3 col-form-label text-right">Hora entrega <span class="text-danger">*</span></label>
+						<div class="col-3">
+							<input type="text" id="hora" name="hora" required="required" class="form-control" placeholder="00:00">
+						</div>
+					</div>
+					<div id="tbl_areas">
+					</div>
+					<div class="form-group row pt-3 pb-5">
+						<div class="col-3">
+						</div>
+						<div class="col-6 ">
+							<input id="user" type="hidden" name="user" value="{{ user }}">
+							<input id="reqplaca" name="reqplaca" value="0" type="hidden" >
+							<input id="anulado" name="anulado" value="0" type="hidden">
+							<input id="dnuevo" name="dnuevo" value="1" type="hidden">
+							<input id="idcita" name="idcita" value="0" type="hidden">
+							<button type="buttom" class="btn btn-danger btn-lg px-5 registrarsolicitud">ENVIAR SOLICITUD</button>
+							<button type="reset" class="btn btn-secondary btn-lg px-5 btn_reset" href="/agenda/">BORRAR</button>
+							<p class="msg" style="padding:10px"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+			</div>
+    	</div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+{% block javascript %}
+
+<script>
+	$(document).ready(function(){
+		App.init();
+		//App.dataTables();
+        App.menuActive(1,2);
+		//$('form').parsley();
+		$( "#date1" ).datepicker({
+			changeMonth: true,
+			changeYear: true,			
+			dateFormat: 'dd/mm/yy',
+			setDate: 'today',
+			minDate: 'today'
+		})
+		checkHoras();
+        // imput con tags
+	  var idTags = 0;
+       var tags = $('#tags');
+      // Inicializa tags y configuration
+       tags.tagsinput({
+		  tagClass: function(item) {
+				switch (item.tipo) {
+				case '1'  : return 'label label-info';
+				case '2'  : return 'label label-warning label-important';
+				case '3'  : return 'label label-danger';
+				case '4'  : return 'label label-default';
+				case '5'  : return 'label label-default';
+				}
+			},
+          allowDuplicates: false,
+          itemValue: 'id',
+		  //itemValue: 'data',
+          itemText: 'label',
+
+        });
+		/*tags.on('itemRemoved', function(event) {
+		// event.item: contains the item
+		console.log(event.id)
+		});*/
+
+		$(".listamedicos, #codzona").select2();
+		$(".pacientebuscar").select2({tags: true, width: '100%'});
+		$('.btn_reset').on("click", function(e){
+			resetForm();
+		})
+		
+       
+        $('#search-type').on('change', function () {
+            let data = this.value;
+			if (data == 'zoneHC'){
+				console.log (" ///1" + data)
+					$("."+ data).show();
+					$(".zoneNOMBRE").hide();
+					$(".zoneDOC").hide();
+			}else if (data == 'zoneNOMBRE'){
+				console.log (" ///2" + data)
+					$("."+ data).show();
+					$(".zoneHC").hide();
+					$(".zoneDOC").hide();
+			}else {
+				console.log (" ///3" + data)
+					$(".zoneNOMBRE").hide();
+					$(".zoneHC").hide();
+					$(".zoneDOC").show();
+			}
+
+        });
+      /* ------------------------------------------------------------------------------------- */
+		//BUSCAR HISTORIAS 
+        $('.AddTag2').on("click", function(e){
+			$(".msj-error").html('');
+            var CodeHC = $(".codHC2").val();
+			var CodeFL = $("#folio").val();
+			console.log ("codifo de foli oa consultar:  " + CodeFL);
+             //tags.val();
+            $.post('{{ path("listhc") }}', {codhistoria:CodeHC,codfolio:CodeFL },function(data){			
+			if (data.length == 0 ){
+				console.log("Historia Clínica con Nro de folio  NO Registrada");
+				$(".msj-error").html('HC' + ajustar(6,CodeHC) +  '-'+ ajustar(2,CodeFL) + '<BR><span class="text-danger">NO SE ENCUENTRA REGISTRADA</span>');
+			}
+			$.each(data, function (index, value){
+				var tipohc = tipo_hc(Number(value.tipohistoria)); 								
+				var txtsede = nombre_sede(value.sede)
+				var folio =  folio_cod(value.folio); 
+				if (value.sede == '0'){					
+					txtsede = ''
+				}
+				idTags += 1;
+					$('#tags').tagsinput('add', { 
+							id:value.codhistoria + folio + value.codpaciente,
+							hc:ajustar(6, value.codhistoria),
+							pa:value.codpaciente, 
+							sede:value.sede, 
+							folio:folio,
+							tipo:value.tipohistoria, 
+							label: tipohc + " // HC" +  ajustar(6, value.codhistoria) + "-"+ folio + " : " + value.paterno + ' '+ value.materno + ' ' +value.nombre + ' - ' + txtsede 
+							});
+				});
+			},'json');
+        });
+
+	/* ------------------------------------------------------------------------------------- */
+	// BUSCAR POR NOMBRE
+
+		$('#test').on('select2:select', function (e) {
+			var value = e.params.data;			
+			var tipohc = tipo_hc(Number(value.tipohistoria)); 	
+			var txtsede = nombre_sede(value.sede)
+			var folio =  folio_cod(value.folio); 
+			if (value.sede == '0'){					
+					txtsede = ''
+				}
+			idTags += 1;
+			$('#tags').tagsinput('add', { 
+					id:value.id,
+					hc:ajustar(6, value.codhistoria),
+					pa:value.codpaciente , 
+					sede:value.sede, 
+					folio:folio,
+					tipo:value.tipohistoria, 
+					label: tipohc + " // HC" + ajustar(6, value.codhistoria) + "-"+ folio + " : " + value.paterno + ' '+ value.materno + ' ' +value.nombre + ' - ' + txtsede 
+					});
+		});
+
+	$("#test").select2({
+		//language: "es",
+		/*inputTooShort: function () {
+				return "You mustfdgfdg enter more characters...";
+			},*/
+		ajax: {
+			url: "{{ path('buscadorhc') }}",
+			dataType: 'json',
+			method: 'POST',
+			delay: 1000,
+			data: function(params) {
+				return {
+					q: params.term,
+					//searchTerm: params.term, // search term
+					page: params.page
+				};
+			},
+			processResults: function(data, params) {
+				var d = [];
+				for (var i = data.items.length - 1; i >= 0; i--) {				
+					var tipohc = tipo_hc(Number(data.items[i].tipohistoria)); 	
+					var txtsede = nombre_sede(data.items[i].sede);
+					if (data.items[i].sede == '0'){					
+							txtsede = ''
+					}
+				d.push({
+					id: data.items[i].codhistoria + data.items[i].folio + data.items[i].codpaciente, 
+					text: tipohc + " - HC" + ajustar(6, data.items[i].codhistoria ) +"-"+ ajustar(2,data.items[i].folio)  + " /// "  +data.items[i].paterno + ' ' + data.items[i].materno +' ' + data.items[i].nombre +  " - " + txtsede,
+					nombre:data.items[i].nombre ,
+					paterno:data.items[i].paterno ,
+					materno:data.items[i].materno,
+					codpaciente:data.items[i].codpaciente,
+					codhistoria:data.items[i].codhistoria,
+					sede:data.items[i].sede,
+					caja:data.items[i].caja,
+					folio:data.items[i].folio,
+					tipohistoria:data.items[i].tipohistoria
+				});
+				}
+
+				params.page = params.page || 0;
+				return {
+					results: d,
+					data:data,
+					pagination: {
+						more: (1 + params.page) < data.totalPages
+					}
+				};
+					
+			},
+			cache: true
+		},
+		//allowClear: true,
+		allowClear: false,
+		escapeMarkup: function(markup) {
+			return markup;
+		},
+		multiple: false,
+		tags: false,
+		minimumInputLength: 8,
+		 maximumSelectionLength: 30,
+		placeholder: "Apellidos y nombres de pacientes",
+		closeOnSelect: false,
+		templateResult: formatRepo,
+		templateSelection: formatRepoSelection
+	});
+		function formatRepoSelection(data) {
+			//console.log (" ******** "+ data.text );
+			$(".select2-results__option[varia-selected='true']").hide();
+			
+			return data.text;
+		}
+		function formatRepo(data) {
+			if (data.loading) return data.text;
+			return data.text;
+		}		
+	});
+
+	 function resetForm (){
+		$(".listamedicos, #codzona, .pacientebuscar, #test").val('').trigger('change');
+		$('#tags').tagsinput('removeAll');
+		$(".zoneNOMBRE").show();
+			$(".zoneDOC").hide();
+			$(".zoneHC").hide();
+				$(".msg").html();
+				
+
+	}
+//$('.offer_checkout_page_link .select2-selection').trigger(e);
+	/* ---------------------------------------------------------------------------------------- */
+	//BUSCAR DOCUMENTO
+        $('.buscarDOC').on("click", function(e){
+			$(".msj-error-doc").html('');
+            var nunDOC = $(".numDoc").val();			
+            $.post('{{ path("buscadorhcdni") }}', {dni:nunDOC },function(data){	
+			var data = 	data.items;	
+			if (data.length == 0 ){
+				console.log("Historia Clínica con DOC - NO Registrada");
+				$(".msj-error-doc").html('DOC: ' + nunDOC + '<BR><span class="text-danger">NO SE ENCUENTRA REGISTRADA</span>');
+			}           
+			$.each(data, function (index, value){								
+				var tipohc = tipo_hc(Number(value.tipohistoria)); 
+				var txtsede = nombre_sede(value.sede)				
+				var folio =  folio_cod(value.folio);
+				if (value.sede == '0'){					
+					txtsede = ''
+				}
+				idTags += 1; 			
+					$('#tags').tagsinput('add', { 
+							id:value.codhistoria+folio+value.codpaciente,
+							hc:ajustar(6, value.codhistoria),
+							pa:value.codpaciente , 
+							sede:value.sede, 
+							folio:folio,
+							tipo:value.tipohistoria, 
+							label: tipohc + " // HC" + ajustar(6, value.codhistoria) + "-"+ folio + " : " + value.paterno + ' '+ value.materno + ' ' +value.nombre +  ' - ' + txtsede 
+							});					
+				});
+			},'json');
+        });
+       
+
+	// $('.tags').select2();
+        $( "#fechapedido" ).datepicker({
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'dd/mm/yy',
+			minDate: 'today'
+		});
+		$(".registrarsolicitud").click(function(e){
+			e.preventDefault();
+			 $(this).attr("disabled", true);
+			// e.preventDefault();
+			realizarsolicitud();
+			return false;
+		});
+	
+	/*$("#form").on("submit",function(e){
+		return false;
+		e.preventDefault();
+			 $(this).attr("disabled", true);
+			realizarsolicitud();
+			
+		});*/
+
+
+	//});
+
+	// 
+	function checkHoras() {
+
+		$('#hora').timepicker({
+                   format: 'LT'
+                });
+
+		/*var f=new Date();
+		var h=f.getHours();
+
+		$('#hora').timepicki({
+		overflow_minutes:true,
+		min_hour_value:h,
+		step_size_minutes:15
+		});*/
+	}
+	function horaPedido(input){
+			var time = input.val();
+			var hours = Number(time.match(/^(\d+)/)[1]);
+			var minutes = Number(time.match(/:(\d+)/)[1]);
+			var AMPM = time.match(/\s(.*)$/)[1];
+			if(AMPM == "PM" && hours<12) hours = hours+12;
+			if(AMPM == "AM" && hours==12) hours = hours-12;
+			var sHours = hours.toString();
+			var sMinutes = minutes.toString();
+			if(hours<10) sHours = "0" + sHours;
+			if(minutes<10) sMinutes = "0" + sMinutes;
+			return sHours + ":" + sMinutes+":00"
+			//$("#horapedido").val(sHours + ":" + sMinutes+":00");
+	}
+
+	function realizarsolicitud(){
+		$("p.msg").html('');
+		var tags = $("#tags").tagsinput('items');
+		var codmedico = $("#codmedico").val();
+		var placa = $('#placa').is(":checked")?1:0;		
+		var horapedido = horaPedido($("#hora"));
+		console.log(horapedido);
+		var dnuevo = $("#dnuevo").val();
+		var idcita = $("#idcita").val();
+		var anulado = $("#anulado").val();
+		var codtipopedido = $("#codtipopedido").is(":checked")?"A":"N";		
+		var fechapedido = $("#date1").val();
+		//var sede = $("#sede").val();
+		var sede = $("#codzona option:selected").attr("data-sede");
+		var codzona = $("#codzona option:selected").attr("data-codzona");  //$("#codzona").val();
+		var reqplaca = $("#reqplaca").val();
+		var user = $("#user").val();		
+		var responsable = "{{usuarioh(app.user.username)}}";
+		//var folio = $("#folio").val();
+		var msg = "Registrado desde RFILE";
+		var cant = tags.length;
+		var i = 0;
+		$.each(tags,function(index,item){
+			//console.log(item.data + " - // - "+ item.id+ "//"+codmedico + "//"+ horapedido + "//"+ dnuevo + "//"+ idcita + "//"+ anulado + "//"+ codtipopedido + "//"+fechapedido + "//"+ sede + "//"+ codzona + "//"+ reqplaca + "// USE"+ user);
+			$.post("{{ path('realizarnuevasolicitud') }}",{
+			id: item.id,
+			hc:item.hc,
+			codpaciente: item.pa,
+			codhistoria: item.hc,
+			sede: sede,
+			sedehc:item.sede,
+			tipohc:item.tipo,
+			folio:item.folio,
+			codmedico:codmedico,
+			horapedido:horapedido,
+			dnuevo:dnuevo,
+			idcita:idcita,
+			anulado:anulado,
+			codtipopedido:codtipopedido,
+			fechapedido:fechapedido,			
+			codzona:codzona,
+			reqplaca:reqplaca,
+			user:user,
+			responsable:responsable,
+			msg:msg
+			
+			},function(data){
+					var msj = $("p.msg").html();
+					if (data.success =='1'){
+						$("p.msg").html( msj + "<span class='badge badge-pill badge-success'>HC" + item.hc + "-"+ folio_cod(item.folio) +"</span> - "+ data.msg + '<br>');
+						$('#tags').tagsinput('remove', { id: item.id, text: 'Procesado correctamente' });
+					}else {
+								$("p.msg").html( msj + "<span class='text-danger'>HC" + item.hc + "-"+ folio_cod(item.folio) +" - "+ data.msg + '</span><br>');
+					}
+					
+			},'json');
+		});
+
+		//$("#form")[0].reset();
+		setTimeout(
+			function() 
+			{
+				$('#form .registrarsolicitud').attr("disabled", false);
+			}, 3000);
+	}
+		//autoajustar 
+		function ajustar(tam, num) {
+			if (num.toString().length <= tam) return ajustar(tam, "0" + num)
+			else return num;
+		}
+		//nombre de sede 
+		function nombre_sede(cod) {			
+
+			switch(cod) {
+				/*case '01':
+					return "SAN ISIDRO"
+					break;*/
+				case '02':				
+					return "LA MOLINA";
+					break;
+				/*case '03':					
+					return "SAN ISIDRO";
+					break;
+				case '04':				
+					return "TORRE DR.FLECK";
+					break;	*/						
+				default:
+					return "SAN ISIDRO";
+			} 
+
+		}
+		//tipo de HC
+		function tipo_hc(cod) {
+			// console.log("buscado ----" + cod)
+			switch(cod) {
+				case 1:
+					return "ACTIVA";
+					break;
+				case 2:				
+					return "PASIVA";
+					break;
+				case 3:					
+					return "FALLECIDO";
+					break;
+				case 4:				
+					return "ELIMINADO";
+					break;
+				case 5:					
+					return "ANULADO";	
+					break;				
+				default:
+					return "SIN HC EN ARCHIVO";
+			} 
+			
+		}
+		//folio
+		function folio_cod(cod){
+			if (cod !== 0){	
+				folio = ajustar(2,Number(cod));
+			}else {
+			folio = "000";
+			}  
+			return folio;
+		}
+</script>
+
+{% endblock %}

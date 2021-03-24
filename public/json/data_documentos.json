@@ -1,0 +1,27 @@
+{  
+    "urgencias":[  
+       {"nombre":"Hojas de urgencias"}
+    ],
+    "Laboratorios":[  
+       {"nombre":"Resultados de laboratorio"}
+    ],
+    "Imágenes":[  
+        {"nombre":"Rayos x"},
+        {"nombre":"Tomografía"},
+        {"nombre":"Ecografía"},
+        {"nombre":"Mamografía"},
+        {"nombre":"Resonancia magnética"},
+        {"nombre":"Densitometría"},
+        {"nombre":"Medicina nuclear"},
+        {"nombre":"Endoscopias"},
+        {"nombre":"Oftalmológicas"}
+    ],
+    "Cardiología":[
+        {"nombre":"Electrocardiograma"},
+        {"nombre":"Prueba ergo métrica graduada"},
+        {"nombre":"Electrocardiografía ambulatoria"},
+        {"nombre":"Ecocardiografía doppler a color"},
+        {"nombre":"Mamografía"},
+        {"nombre":"Holter"}
+    ]
+ }

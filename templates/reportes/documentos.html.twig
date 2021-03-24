@@ -1,0 +1,152 @@
+{% extends 'base.html.twig' %}
+{% block title %}Gestionar Historia Clínica{% endblock %}
+{% block body %}
+
+<div class="mai-wrapper mai-clinica">
+	<div class="main-content container">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="panel panel-default ">
+					<div class="panel-heading ">
+						Documentos anexados en Historias Clínicas
+						<span class="panel-subtitle">Seleccione los criterios de busqueda para mostrar las registros </span>
+					</div>
+					<div class="panel-body">
+						<form action="" method="post" class="mayoristas-search">
+							<div class="row">
+								<div class="col-sm-3 pr-0">
+									<div class="form-group">
+										<select name="sede" id="region" class="form-control" required ="" data-parsley-errors-messages-disabled="false">
+											<option value="">Seleccionar Sede</option>											
+											<option value="01">SEDE CENTRAL</option>
+											<option value="02">LA MOLINA</option>
+											<option value="03">TORRE DE CONSULTORIOS</option>
+											<option value="04">TORRE DR FLECK</option>
+
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-3 pr-0">
+									<input name="inicio" id="date1" type="text" placeholder="Fecha de atención" class="form-control" autoComplete="off" required ="" data-parsley-errors-messages-disabled="false">
+								</div>
+								{# <div class="col-sm-3 pr-0">
+									<input name="fin" id="date2" type="text" placeholder="Fecha final" class="form-control" autoComplete="off" required ="" data-parsley-errors-messages-disabled="false">
+								</div> #}
+								<div class="col-sm-3 pr-0">
+									<div class="form-group">
+										<button type="submit" class="btn btn-space btn-secondary btn-lg search m-0 pl-5 pr-5" style="font-size:;">Buscar</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				
+				
+				<div class="panel panel-default panel-table">
+					<form action="" method="post" novalidate="">
+				
+					<div class="panel-heading panel-heading-divider">
+						Total:  <span class="badge badge-pill badge-danger px-3" style="margin-top: -5px; font-size: 0.9em;">5</span> solicitudes encontradas, 
+						atendidas y devueltas el día <span class="text-primary text-uppercase"> "25/10/2018"</span>
+						{# {% if total == 1 %} solicitud encontrada{% else %} solicitudes encontradas #}
+
+						
+					</div>
+					<form class="panel-body mt-3">
+                    <form action="" method="post" class="mayoristas-search">
+                            <table id="table3" class="table table-striped- table-hover">	
+							<thead style="background: #f5f5f5">
+								<tr>																
+									<th >Solicitud</th>
+                                    <th >Sede</th>
+									<th>HC</th>
+									<th>Paciente</th>                                       
+									<th >F. Entrega</th>
+                                        <th data-orderable="false">Hospitalizacion</th>
+                                        <th data-orderable="false">Documento</th>
+                                        <th data-orderable="false">Tipo</th>									
+                                     </tr>
+                                        </thead>
+                                        <tbody>	
+                                            <tr>
+                                                <td>
+                                                76786876
+                                                </td>
+                                                <td>
+                                                San Isidro
+                                                </td>
+                                                <td><a href="/reportes?buscar=0028812">0028812</a></td>
+                                                <td class="text-capitalize">JORGE EDUARDO LEIGH GARCIA</td>
+                                                <td>7/17/2018</td>
+                                                <td >
+                                               	 Sala de operaciones ambulatoria
+                                                </td>
+                                                <td >
+                                                	 Imágenes
+                                                </td>
+                                                <td >
+                                               	 Tomografía
+                                                </td>
+                                            </tr>
+                                
+                                
+                                </tbody>
+
+                                {# <tfoot>
+										<tr>
+											<td colspan="8">
+												<div class="text-left">
+													
+                                                    <button type="submit"  class="btn btn-primary btn-xs ">Actualizar documentos </button>
+
+												</div>
+												
+											</td>
+										</tr>
+									</tfoot> #}
+
+								</table>
+
+								{# {{ form_errors(form) }} #}
+								</form>
+								</div>
+								</div>
+								</div>
+
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+
+<script>
+	$(document).ready(function(){
+		App.init();
+		App.dataTables();
+        App.menuActive(2,3);
+		$('form').parsley();
+        $( "#date1" ).datepicker({
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'dd-mm-yy'
+		});
+		$( "#date2" ).datepicker({
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'dd-mm-yy'
+		});
+		
+	});
+</script>
+
+{% endblock %}

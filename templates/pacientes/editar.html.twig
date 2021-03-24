@@ -1,0 +1,481 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar datos de paciente{% endblock %}
+{% block body %}
+{% set nombrepaciente = paciente.nompaciente %}
+{% set apellidopaterno = paciente.apellidopaterno %}
+{% set apellidomaterno = paciente.apellidomaterno %}
+{% set apellidomaterno = paciente.apellidomaterno %}
+{% set codtipodocumento = paciente.codtipodocumento %}
+{% set numdocumento = paciente.numdocumento %}
+{% set email = paciente.email %}
+{% set idpaciente = paciente.idpaciente %}
+{% set codpaciente = paciente.codpaciente %}
+{% set fechanacimiento = paciente.fechanacimiento %}
+{% set telefono = paciente.telefono %}
+{% set celular = paciente.celular %}
+{% set codigopostal = paciente.codigopostal %}
+{% set pais = paciente.pais %}
+{% set departamento = paciente.departamento %}
+{% set localidad = paciente.localidad %}
+{% set direccion = paciente.direccion %}
+{% set numdireccion = paciente.numdireccion %}
+{% set codubigeo = paciente.codubigeo %}
+{% set estado = paciente.estado %}
+{% set codconyuge = paciente.codconyuge %}
+<div class="mai-wrapper mai-clinica">
+        <div class="main-content container">
+            <div class="row">
+                <div class="col-sm-12">
+				<h4 class=" badge-pill badge-danger px-4 py-2 ">Editar datos de paciente</h4>
+<form name="tbl_paciente" method="post" action="{{ path("guardaredicionpaciente") }}" enctype="multipart/form-data" novalidate="">
+<input name="tbl_paciente[idpaciente]" type="hidden" value="{{ idpaciente }}">
+<div class="panel panel-default">
+	<div class="panel-heading panel-heading-divider">
+		Datos personales
+		<span class="panel-subtitle">Ingrese todos los datos solicitados del paciente </span>
+	</div>
+	<div class="panel-body">
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Nombre <span class="text-danger">*</span></label>
+			<div class="col-6">
+				<input id="tbl_paciente_nombre" name="tbl_paciente[nombrepaciente]" value="{{ nombrepaciente }}" required="required" class="form-control" data-parsley-required-message="Ingrese el nombre(s)" type="text">                     
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Apellido paterno <span class="text-danger">*</span></label>
+			<div class="col-6">
+				<input id="tbl_paciente_apellidopaterno" name="tbl_paciente[apellidopaterno]" value="{{ apellidopaterno }}" required="required" class="form-control" data-parsley-required-message="Ingrese el apellido" type="text">                     
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Apellido materno <span class="text-danger">*</span></label>
+			<div class="col-6">
+				<input id="tbl_paciente_apellidomaterno" name="tbl_paciente[apellidomaterno]" value="{{ apellidomaterno }}" required="required" class="form-control" data-parsley-required-message="Ingrese el apellido" type="text">                     
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Apellido de Conyuge</label>
+			<div class="col-4">
+				<input name="tbl_paciente[codconyuge]" value="{{ codconyuge }}" class="form-control" placeholder="" data-parsley-required-message="Ingrese el apellido de Conyuge" type="text">
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Tipo documento <span class="text-danger">*</span></label>
+			<div class="col-4">
+				<select id="tbl_paciente_codtipodocumento" name="tbl_paciente[codtipodocumento]" required="required" class="form-control custom-select col-6" data-parsley-required-message="Seleccione el tipo de documento">
+				<option value="" selected="selected">Seleccione la identidad</option>
+				<option {% if codtipodocumento == "CE" %} selected="" {% endif %} value="CE">Carnet extranjería</option>
+				<option {% if codtipodocumento == "PAS" %} selected="" {% endif %} value="PAS">Pasaporte</option>
+				<option {% if codtipodocumento == "CD" %} selected="" {% endif %} value="CD">Carnet diplomático</option>
+				<option {% if codtipodocumento == "LC" %} selected="" {% endif %} value="LC">Licencia de conducir </option>
+				<option {% if codtipodocumento == "CI" %} selected="" {% endif %} value="CI">Carnet de identidad </option>
+				<option {% if codtipodocumento == "DIE" %} selected="" {% endif %} value="DIE">Documento de identidad de extranjero </option>
+				<option {% if codtipodocumento == "DTM" %} selected="" {% endif %} value="DTM">Documento temporal del menor </option>
+				<option {% if codtipodocumento == "RN" %} selected="" {% endif %} value="RN">Recién nacido </option>
+				<option {% if codtipodocumento == "PN" %} selected="" {% endif %} value="PN"> Partida de nacimiento</option>
+				<option {% if codtipodocumento == "LM" %} selected="" {% endif %} value="LM"> Libreta militar</option>
+				<option {% if codtipodocumento == "N.A." %} selected="" {% endif %} value="N.A.">Numero administrativo</option>
+                <option {% if codtipodocumento == "DNI" %} selected="" {% endif %} value="DNI">DNI</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">N° documento <span class="text-danger">*</span></label>
+			<div class="col-4">
+				<input id="tbl_paciente_numdocumento" name="tbl_paciente[numdocumento]" value="{{ numdocumento }}" required="required" class="form-control" data-parsley-required-message="Ingrese el N° de identidad" type="text">                     
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Email <span class="text-danger">*</span></label>
+			<div class="col-6">
+				<input id="tbl_paciente_email" name="tbl_paciente[email]" value="{{ email }}" required="required" class="form-control" data-parsley-required-message="Ingrese el email del usuario" type="email">
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="panel panel-default">
+	<div class="panel-heading panel-heading-divider">
+		Datos domiciliarios
+		<span class="panel-subtitle">Ingrese los datos personales de localización </span>
+	</div>
+	<div class="panel-body">
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">País</label>
+			<div class="col-4">
+				<select id="tbl_paciente_pais" name="tbl_paciente[pais]" data-pais="{{ pais }}"  class="form-control custom-select select2 " required="required" data-parsley-required-message="Selecciona el país" tabindex="-1" aria-hidden="true"><option value="">Seleccione un pais</option></select>                     
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Departamento</label>
+			<div class="col-4">
+				<select id="tbl_paciente_departamento" name="tbl_paciente[departamento]" data-departamento="{{ departamento }}" data-pais="{{ pais }}"  class="form-control custom-select col-6"></select>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Provincia/Localidad</label>
+			<div class="col-4">
+				<select id="tbl_paciente_localidad" name="tbl_paciente[localidad]" data-localidad="{{ localidad}}" class="form-control custom-select col-6"></select>
+			</div>
+		</div>
+		
+        <div class="form-group row">
+			<label class="col-3 col-form-label text-right">Ubigeo</label>
+			<div class="col-4">
+				<input id="tbl_paciente_codubigeo" name="tbl_paciente[codubigeo]" class="form-control" type="text">
+            </div>
+		</div>
+       
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Dirección</label>
+			<div class="col-6">
+				<input id="tbl_paciente_direccion" name="tbl_paciente[direccion]" value="{{ direccion }}" class="form-control" data-parsley-required-message="Ingrese la dirección" type="text">                     
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">N° Piso / N° Casa</label>
+			<div class="col-2">
+				<input id="tbl_paciente_numdireccion" name="tbl_paciente[numdireccion]" value="{{ numdireccion }}"  class="form-control" data-parsley-required-message="Ingrese el número" type="text">                      
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Cod. Postal</label>
+			<div class="col-2">
+				<input id="tbl_paciente_codigopostal" name="tbl_paciente[codigopostal]" value="{{ codigopostal }}" class="form-control" data-parsley-required-message="Ingrese el código postal" type="text">                     
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Teléfono</label>
+			<div class="col-4">
+				<input id="tbl_paciente_telefono" name="tbl_paciente[telefono]" value="{{ telefono }}" class="form-control" data-parsley-required-message="Ingrese el teléfono" type="phone">                     
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-3 col-form-label text-right">Celular</label>
+			<div class="col-4">
+				<input id="tbl_paciente_celular" name="tbl_paciente[celular]" value="{{ celular }}"  class="form-control" data-parsley-required-message="Ingrese el numero celular" type="phone">                     
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<div class="panel panel-default panel-table">
+	<div class="panel-heading panel-heading-divider">
+			<a class="btn btn-sm btn-secondary " tabindex="0" aria-controls="table4" href="javascript:void(0)" style="position:absolute; right:0"> <span class="agregar-HC">Agregar Historia Clínica</span></a>
+
+		Historias Clínicas
+		<span class="panel-subtitle">Registros de Historias clinica en por sede </span>
+	</div>
+	<div class="panel-body mt-3">
+
+	<table id="table4" class="table table-striped- table-hover">
+	<a class="dt-button btn-secondary agregarhc" style="margin-left: 3%;" tabindex="0" aria-controls="table4" data-codpaciente="{{ codpaciente }}" href="#table4"> 
+		<span>Agregar Historia Clínica</span>
+	</a>
+							<thead style="background: #f5f5f5">
+								<tr>
+									<th style="width:60%">Sede</th>
+									<th>Historia Clínica</th>
+									<th>F. Registro</th>
+									<th data-orderable="false"></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for item in hc %}
+								<tr>
+									<td>
+										{{nombre_sede(item.sede)}}
+									</td>
+									<td>
+										{{formato_hc(item.codhistoria)}}
+									</td>
+									<td>
+										{{ item.registro|date('d/m/Y') }} <!-- 15/11/2018 -->
+									</td>
+									<td class="actions">
+										<a href="#table4" class="editarhc"
+											data-sede="{{ item.sede }}" 
+											data-idhc="{{ item.idhc }}" 
+											data-codpaciente="{{ codpaciente }}" 
+											data-codhistoria="{{formato_hc(item.codhistoria)}}" 
+											data-placement="left" 
+										><span class="s7-note2" title="Editar HC"></span></a>
+
+										<a href="#table4" class="borrarhc" data-idhc="{{ item.idhc }}" data-codpaciente="{{ codpaciente }}">
+											<span class="s7-trash"  data-toggle="tooltip" data-placement="top" title="Eliminar"></span>
+										</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+	</table>
+	</div>
+</div>
+
+
+<div class="panel panel-default -panel-table">
+	<div class="panel-heading panel-heading-divider">Credencial clínico
+		<span class="panel-subtitle">Registra el identificador unico del paciente </span>
+	</div>
+	<div class="panel-body mt-3 ">
+		<div class="form-group row ">
+			<label class="col-3 col-form-label text-right">Cod. Paciente <span class="text-danger">*</span></label>
+			<div class="col-4">
+				<input id="tbl_paciente_codpaciente" name="tbl_paciente[codpaciente]" value="{{ codpaciente }}" placeholder="PC-00000" required="" class="form-control" data-parsley-required-message="Ingrese el código de Paciente" type="text">
+			</div>
+		</div>
+		<div class="row pt-5 pb-5">
+			<div class="col-3">
+				<label class="custom-control custom-checkbox mt-2">
+				</label>
+			</div>
+			<div class="col-6">
+				<p class="text-left">
+					<button type="submit" class="btn btn-danger btn-lg px-5" data-toggle="modal" data-target="#exampleModal">ACTUALIZAR PACIENTE</button>
+					<a class="btn btn-secondary btn-lg px-5 " href="{{ path('pacientes') }}">CANCELAR</a>
+				</p>
+				<p class="msg"></p>
+			</div>
+		</div>
+	</div>
+</div>
+</form>
+                </div>
+            </div>
+        </div>
+	</div>
+{% endblock %}
+{% block javascript %}
+
+<script>
+	$(document).ready(function(){
+		App.init();
+		App.dataTables();
+		//var btnAddHC = '<a class="dt-button btn-secondary agregar-HC" tabindex="0" aria-controls="table4" href="#"> <span>Agregar Historia Clínica</span></a>';
+		//$(".mai-datatable-header > div:eq( 0 )").append(btnAddHC);
+        App.menuActive(1,4);
+		$('form').parsley();
+        $( "#fechapedido" ).datepicker({
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'dd/mm/yy'
+		});
+		$("form").ajaxForm({
+			"datatype":"json",
+			"success": function(responseText, statusText, xhr, $form){
+				if(responseText.success===1){
+					swal("Datos actualizado!", "Los datos del paciente se han actualizado correctamente", "success");
+					//location.reload(); 
+				}else{
+					swal("Error de datos!", "Revise por favor los datos del paciente e intentelo nuevamente", "error");
+				}
+			}
+		});
+        paises();
+        departamento();
+        provincia();
+	});
+    function paises(){
+        $.get("{{ path("paises") }}", function(data){
+            var html = "<option value='pe'>Seleccione un pais</option>";
+            if($.trim(data) !== ""){
+                $.each(data,function(index,item){
+                    html += "<option value='"+item+"'>"+index+"</option>";
+                });
+            }
+            $("#tbl_paciente_pais").html(html);
+            $("#tbl_paciente_pais option").each(function(index,item){
+                if($(item).val()=== $("#tbl_paciente_pais").attr("data-pais") ){
+                    $(this).prop("selected",true).change();
+                }
+            });
+        },"json");
+    }
+    function departamento(){
+        $("#tbl_paciente_pais").change(function(){
+            var val = $(this).val();
+            $.get("{{ path("departamento") }}/"+val+"",function(data){
+                var html = "<option value=''>Seleccione un Departamento</option>";
+            if($.trim(data) !== ""){
+                $.each(data,function(index,item){
+                    html += "<option  value='"+item.id_ubigeo+"'>"+item.nombre_ubigeo+"</option>";
+                });
+            }
+            $("#tbl_paciente_departamento").html(html);
+            $("#tbl_paciente_departamento").attr('data-pais',val);
+            $("#tbl_paciente_departamento option").each(function(index,item){
+                if($(item).val()===$("#tbl_paciente_departamento").attr("data-departamento") ){
+                    $(this).prop("selected",true).change();
+                }
+            });
+            });
+        });
+    }
+    function provincia(){
+        $("#tbl_paciente_departamento").change(function(){
+            var val = $(this).val();
+            var datapais = $(this).attr("data-pais");
+            $.get("{{ path("provincia") }}/"+datapais+"/"+val+"",function(data){
+                var html = "<option value=''>Seleccione una localidad</option>";
+            if($.trim(data) !== ""){
+                $.each(data,function(index,item){
+                    html += "<option value='"+item.id_ubigeo+"'>"+item.nombre_ubigeo+"</option>";
+                });
+            }
+            $("#tbl_paciente_localidad").html(html);
+            $("#tbl_paciente_localidad").attr('data-pais',datapais);
+            $("#tbl_paciente_localidad option").each(function(index,item){
+                if($(item).val() === $("#tbl_paciente_localidad").attr("data-localidad") ){
+                    $(this).prop("selected",true).change();
+                }
+            });
+            });
+        });
+    }
+
+	/* ------------------------------------*/
+	$(".borrarhc").click(function (event) {
+			var idhc= $(this).attr('data-idhc');
+			swal({
+								title: "¿Deseas eliminar la HC?",
+								text: "Esta acción eliminará todo los datos relacionados incluyendo las solicitudes!",
+								type: "warning",	
+								showCancelButton: true,
+								closeOnConfirm: false,
+								confirmButtonClass: "btn-danger",
+								confirmButtonText: "Sí, eliminar HC",
+								cancelButtonText: "Cancelar",
+								showLoaderOnConfirm: true
+								}, function (confirm) {
+									if (confirm) {
+											$.post('{{ path("hceliminar") }}',{
+												idhc : idhc
+											},function(data){
+												if(data.success === 1){
+													swal("Solicitud confirmada!", "Se ha eliminado la HC correctamente!", "success");
+													setTimeout(function () {
+														location.reload();
+													}, 2000);
+												}else{
+													swal("Error de eliminación!", "No se puede borrar la HC,intentelo nuevamente!", "error");
+												}
+											},'json');
+									}
+								});
+	});
+	/* ------------------------------------*/
+		$("a.editarhc").click(function (event) {
+			var codpaciente = $(this).attr('data-codpaciente');
+			var codhistoria = $(this).attr('data-codhistoria');
+			var idhc= $(this).attr('data-idhc');
+			var sede = $(this).attr('data-sede');
+			swal({
+				html: true,
+				title: "¿Deseas actualizar la HC?",
+				text: "Esta acción modificará todos los datos relacionados!<br>"+ 
+						"<select class='form-control mt-3' id=\'responsable\'>"+
+						"<option value=''>Seleccionar Sede</option>"+
+						"<option value='01'>{{nombre_sede('01')}}</option>"+
+						"<option value='02'>{{nombre_sede('02')}}</option>"+
+						"<option value='04'>{{nombre_sede('04')}}</option>"+
+						"</select>",
+				icon: "success",
+				imageUrl: "{{ asset('/assets/img/')}}folder_icon.png",
+				type: "input",
+				showCancelButton: true,
+				showLoaderOnConfirm: false,
+				confirmButtonClass: "btn-danger",
+				confirmButtonText: "Si, actualizar",
+				cancelButtonText: "Cancelar",
+				closeOnConfirm: true,
+				inputPlaceholder: "HC0000000",
+				inputValue: 'input value'
+			},
+				function (confirm) {
+					if (confirm) {
+						var sede = $(".sweet-alert select#responsable").val();
+						$.post('{{ path("hceditar") }}',{
+							sede:sede,
+							hc:confirm,
+							codpaciente:codpaciente,
+							idhc:idhc
+						},
+						function(data){
+							if(data.success === 1){
+								swal("Solicitud confirmada!", "Se ha editado el codigo de HC correctamente!", "success");
+													setTimeout(function () {
+														location.reload();
+													}, 2000);
+							}else{
+								swal("Error de actualización!", "No se puede actualiar la HC,intentelo nuevamente!", "error");
+							}
+						},"json");
+					}
+					/**/
+				});
+				var drop = $(".sweet-alert select#responsable option");
+				$(".sweet-alert div input").val(codhistoria);
+				$.each(drop,function(i,p){
+					var val = $(this).val();
+					if(val === sede){
+						$(this).prop("selected",true);
+					}
+				});
+		});
+		/* ------------------------------------*/
+		$(".agregarhc").click(function () {
+			var codpaciente = $(this).attr('data-codpaciente');
+			swal({
+				html: true,
+				title: "Registrar Historia Clínica",
+				text: "Esta acción registrará una HC para el paciente en la sede selecciónada!<br>"+ 
+						"<select class='form-control mt-3' id=\'responsablec\'>"+
+						"<option value=''>Seleccionar Sede</option>"+
+						"<option value='01'>{{nombre_sede('01')}}</option>"+
+						"<option value='02'>{{nombre_sede('02')}}</option>"+
+						"<option value='04'>{{nombre_sede('04')}}</option>"+											
+						"</select>",
+				icon: "success",
+				imageUrl: "{{ asset('/assets/img/')}}folder_icon.png",
+				type: "input",
+				showCancelButton: true,
+				showLoaderOnConfirm: false,
+				confirmButtonClass: "btn-danger",
+				confirmButtonText: "Si, registrar",
+				cancelButtonText: "Cancelar",
+				closeOnConfirm: true,
+				inputPlaceholder: "HC0000000"
+			},
+				function (confirm) {
+					if (confirm) {
+						var sede = $(".sweet-alert select#responsablec").val();
+						$.post('{{ path("hcguardar") }}',
+						{
+							sede:sede,
+							hc:confirm,
+							codpaciente:codpaciente
+						},
+						function(){
+							if(data.success === 1){
+								swal("Solicitud confirmada!", "Se ha agregado un nuevo codigo de  HC correctamente!", "success");
+								setTimeout(function () {
+									location.reload();
+									}, 2000);
+							}else{
+								swal("Error de actualización!", "No se puede agregar el nuevo codigo de HC,intentelo nuevamente!", "error");
+							}
+						});
+					}
+					/**/
+				});
+		});
+		/* ------------------------------------*/
+</script>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Areas{% endblock %}
+
+{% block body %}
+    <h1>Areas</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Idarea</th>
+                <td>{{ tbl_area.idarea }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ tbl_area.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Tipo</th>
+                <td>{{ tbl_area.tipo }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ tbl_area.status }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('tbl_areas_index') }}">back to list</a>
+
+    <a href="{{ path('tbl_areas_edit', {'idarea': tbl_area.idarea}) }}">edit</a>
+
+    {{ include('tbl_areas/_delete_form.html.twig') }}
+{% endblock %}

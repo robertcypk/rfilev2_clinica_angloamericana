@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar Area{% endblock %}
+
+{% block body %}
+
+ <div class="mai-wrapper mai-clinica">
+        <div class="main-content container">
+            <div class="row">
+                <div class="col-sm-12">		
+				<h4 class=" badge-pill badge-danger px-4 py-2 ">Actualizar ubicación</h4>
+				
+				 {{ include('tbl_areas/_form.html.twig', {'button_label': 'ACTUALIZAR ZONA'}) }}
+                </div>
+            </div>
+        </div>
+	</div>
+	
+       
+
+{% endblock %}
+
+{% block javascript %}
+    <!-- jsvascript registro -->
+    <script type="text/javascript">
+        $(document).ready(function(){
+            App.init();
+			App.menuActive(1,7);
+            /*$('#tbl_areas > div').addClass("form-group row")
+            $('#tbl_areas > div > label').addClass("col-3 col-form-label text-right")
+            $('#tbl_areaas > div > input,select').addClass("col-6 form-control")
+            $('#tbl_areas > div > #tbl_areas_nombre').addClass("col-6")*/
+           
+            $('form').parsley();                   
+        })
+    </script>
+{% endblock %}

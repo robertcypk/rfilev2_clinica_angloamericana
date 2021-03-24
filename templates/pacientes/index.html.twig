@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+{% block title %}Pacientes{% endblock %}
+{% block body %}
+<div class="mai-wrapper mai-clinica">
+	<!--------------------------------- Cuerpo DataTable (PACIENTES) -------------------------------->
+	<div class="main-content container">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="panel panel-default ">
+					<div class="panel-heading ">
+						Buscar pacientes
+						<span class="panel-subtitle">Ingrese uno de los criterios aceptados: <span class="text-success"> N° DOCUMENTO ó CODIGO DE PACIENTE </span> </span>
+					</div>
+					<div class="panel-body">
+						<form action="" method="post" class="mayoristas-search"  novalidate="">
+							<div class="row">
+								<div class="col-sm-7 pr-0 has-danger-">
+									<input name="buscar" id="buscar" type="text" placeholder="EJ: 00008555" required="" data-parsley-minlength="4" data-parsley-errors-messages-disabled="false" class="form-control " autoComplete="off">
+								</div>
+								<div class="col-sm-3 pr-0">
+									<div class="form-group">
+										<button type="submit" class="btn btn-space btn-secondary btn-lg search m-0 pl-5 pr-5 border-2" >Buscar</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="panel panel-default panel-table">
+					{% if total != '' %}
+					<div class="panel-heading panel-heading-divider">
+						Total:  <span class="badge badge-pill badge-danger px-3" style="margin-top: -5px; font-size: 0.9em;">{{ total }} </span>
+						{% if total == 1 %} registro encontrado{% else %} registros encontrados, {% endif %} buscando con <span class="text-primary text-uppercase"> "{{ buscar }}"</span>
+					</div>
+					{% endif %} 
+					<div class="panel-body mt-3">
+						<table id="table3" class="table table-striped- table-hover-">
+							<thead style="background: #f5f5f5">
+								<tr>
+									<th>Cod.</th>
+									<th>Nombre y Apellidos</th>
+									<th>Documento</th>
+									<th>HC</th>
+									<th>F. Registro</th>
+									{% if is_granted("ROLE_ADMIN") %}
+									<th data-orderable="false"></th>
+									{% endif %}
+								</tr>
+							</thead>
+							<tbody>
+							{% for item in pacientes %}
+								<tr>
+									<td>{{ item.codpaciente }}</td>
+									<td class="text-capitalize">{{ item.nombresapellidos | title }}</td>
+									<td>
+									{{ item.tipodocumento }} -
+									{{ item.numdocumento }}
+									</td>
+									<td>
+									{% if item.codhistoria == '' %}
+										<a> n/a </a>
+									{% else %}
+										<a href="{{ path('reportes') }}?buscar={{item.codhistoria}}">
+											{{item.codhistoria}}
+										</a>
+									{% endif %}
+									</td>
+									<td>{{ item.registro|date('d/m/Y') }}</td>
+									 {% if is_granted("ROLE_ADMIN") %}
+									<td class="text-right">
+										<div class="btn-group btn-hspace">
+											<a href="{{ path('editarpaciente',{'id':item.codpaciente}) }}" class="btn btn-secondary btn-xs ">Editar 
+												<span class="icon-dropdown s7-angle-right"></span>
+											</a>
+										</div>
+									</td>
+									{% endif %}
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+									<div class="row">
+									<div class="text-left col-sm-12 px-5">
+											<nav>
+											<ul class="pagination">
+												{{ paginador|raw }}
+											</ul>
+											</nav>
+									</div>
+									</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script>
+	$(document).ready(function(){
+		App.init();
+		App.dataTables();
+		App.menuActive(1,4);
+		$('form').parsley();
+		/*$( "#date1" ).datepicker({
+			changeMonth: true,
+			changeYear: true
+			});
+			$( "#date2" ).datepicker({
+			changeMonth: true,
+			changeYear: true
+		});*/
+	})
+</script>
+{% endblock %}

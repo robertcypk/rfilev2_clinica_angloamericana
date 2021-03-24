@@ -1,0 +1,213 @@
+{% extends 'base.html.twig' %}
+{% block title %}Editar Usuario{% endblock %}
+{% block body %}
+ <div class="mai-wrapper mai-clinica">
+        <div class="main-content container">
+            <div class="row">
+                <div class="col-sm-12">		
+				<h4 class=" badge-pill badge-danger px-4 py-2 ">Actualizar usuario</h4>
+				 {{ include('tbl_usuarios/_form.html.twig', {'button_label': 'ACTUALIZAR USUARIO'}) }}				 
+                </div>
+            </div>
+        </div>
+	</div>
+<!-- Modal -->
+        <div id="mod-warning" tabindex="-1" role="dialog" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" data-dismiss="modal" aria-hidden="true" class="close"><span class="s7-close"></span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center">
+                        <div class="text-warning"><span class="modal-main-icon s7-attention"></span></div>
+                            <h3 class="mb-4">ADVERTENCIA!</h3>
+                            <p>Los cambios se guardaran<br></p>
+                            <div class="mt-6">
+                                <button type="button" data-dismiss="modal" class="btn btn-sm btn-space btn-secondary">Cancelar</button>
+                                <button type="button" data-dismiss="modal" class="btn btn-sm btn-space btn-warning">Editar</button>
+                            </div>
+							</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+{% block javascript %}
+<!-- jsvascript registro -->
+<script type="text/javascript">
+    $(document).ready(function(){
+        //$('#tbl_usuarios_imagen').wrapAll( "<div class='col-6 px-0' />");
+        //$('#tbl_usuarios_imagen').after('<label id="labelFile" for="tbl_usuarios_imagen" class="btn btn-secondary mb-0"> <i class="icon s7-upload"></i><span>Escoge una imagen ... </span></label>')
+        const inputFile = document.getElementById("tbl_usuarios_imagen")
+        const $inputFile = $('#labelFile')
+        inputFile.addEventListener('change',function(){
+            if(inputFile.files.length == 0){
+                $inputFile.removeClass('btn-success')
+            }else{
+                $inputFile.addClass('btn-success')
+            }
+        })
+        App.init();
+        App.formElements();
+		App.menuActive(1,5);
+        $('form').parsley();
+
+    })
+    jQuery(function(){
+        paises();
+        departamento();
+        provincia();
+        distrito();
+        seleccionarmedicos();
+    });
+        function seleccionarmedicos(){
+            var codz = $("#tbl_usuarios_idarea").find(":selected").val();
+            //auto select
+            
+           /* $.post('{{ path("medicos_codigo_zona") }}',{codzona:codz},function(data){
+                    if($.trim(data) !== ""){
+                        var html = '';
+                        $.each(data,function(index,item){
+                            html += '<option value="'+ item.codmedico +'" >'+ item.medico +'</option>';
+                        });
+                        $(".medicos_codigo_zona").html(html);
+                    }else {
+                        $(".medicos_codigo_zona").html("<option value=''>Médicos no disponibles</option>");
+                    }
+                },'json');*/
+            //manual select
+            $("#tbl_usuarios_idarea").change(function(){
+                var codzona = $(this).val();
+                 $(".medicos_codigo_zona").find('option').remove();;
+                 $(".medicos_codigo_zona").html("<option value=''>Cargando...</option>");
+                $.post('{{ path("medicos_codigo_zona") }}',{codzona:codzona},function(data){
+                    if($.trim(data) !== ""){
+                        var html = '';
+                        $.each(data,function(index,item){
+                            html += '<option value="'+ item.codmedico +'" >'+ item.medico +'</option>';
+                        });
+                        $(".medicos_codigo_zona").html(html);
+                    }else {
+                        $(".medicos_codigo_zona").html("<option value=''>Médicos no disponibles</option>");
+                    }
+                },'json');
+            });
+        }
+    function paises(){
+        $.get("{{ path("paises") }}", function(data){
+            var html = "<option value='pe'>Seleccione un pais</option>";
+            if($.trim(data) !== ""){
+                $.each(data,function(index,item){
+                    html += "<option value='"+item+"'>"+index+"</option>";
+                });
+            }
+            $("#tbl_usuarios_codigopais").html(html);
+            $("#tbl_usuarios_codigopais option").each(function(index,item){
+                if($(item).val()==="{{ tbl_usuario.codigopais }}"){
+                    $(this).prop("selected",true).change();
+                }
+            });
+        },"json");
+    }
+    function departamento(){
+        $("#tbl_usuarios_codigopais").change(function(){
+            var val = $(this).val();
+            $.get("{{ path("departamento") }}/"+val+"",function(data){
+                var html = "<option value=''>Seleccione un Departamento</option>";
+            if($.trim(data) !== ""){
+                $.each(data,function(index,item){
+                    html += "<option  value='"+item.id_ubigeo+"'>"+item.nombre_ubigeo+"</option>";
+                });
+            }
+            $("#tbl_usuarios_departamento").html(html);
+            $("#tbl_usuarios_departamento").attr('data-pais',val);
+            $("#tbl_usuarios_departamento option").each(function(index,item){
+                if($(item).val()==="{{ tbl_usuario.departamento }}"){
+                    $(this).prop("selected",true).change();
+                }
+            });
+            });
+        });
+    }
+    function provincia(){
+        $("#tbl_usuarios_departamento").change(function(){
+            var val = $(this).val();
+            var datapais = $(this).attr("data-pais");
+            $.get("{{ path("provincia") }}/"+datapais+"/"+val+"",function(data){
+                var html = "<option value=''>Seleccione una provincia</option>";
+            if($.trim(data) !== ""){
+                $.each(data,function(index,item){
+                    html += "<option value='"+item.id_ubigeo+"'>"+item.nombre_ubigeo+"</option>";
+                });
+            }
+            $("#tbl_usuarios_provincia").html(html);
+            $("#tbl_usuarios_provincia").attr('data-pais',datapais);
+            $("#tbl_usuarios_provincia option").each(function(index,item){
+                if($(item).val()==="{{ tbl_usuario.provincia }}"){
+                    $(this).prop("selected",true).change();
+                }
+            });
+            });
+        });
+    }
+    function distrito(){
+        $("#tbl_usuarios_provincia").change(function(){
+            var val = $(this).val();
+            var datapais = $(this).attr("data-pais");
+            $.get("{{ path("distrito") }}/"+datapais+"/"+val+"",function(data){
+                var html = "<option value=''>Seleccione un distrito</option>";
+            if($.trim(data) !== ""){
+                $.each(data,function(index,item){
+                    html += "<option value='"+item.id_ubigeo+"'>"+item.nombre_ubigeo+"</option>";
+                });
+            }
+            $("#tbl_usuarios_distritos").html(html);
+            $("#tbl_usuarios_distritos").attr('data-pais',datapais);
+            $("#tbl_usuarios_distritos option").each(function(index,item){
+                if($(item).val()==="{{ tbl_usuario.distritos }}"){
+                    $(this).prop("selected",true).change();
+                }
+            });
+            });
+        });
+        selectExtraOptions();
+    }
+    function selectExtraOptions(){
+        $("#tbl_usuarios_status option").each(function(index,item){
+                if($(item).val()==="{{ tbl_usuario.status }}"){
+                    $(this).prop("selected",true).change();
+                }
+            });
+        $("#tbl_usuarios_idhorario option").each(function(index,item){
+            console.log($(item).val());
+                if($(item).val()==="{{ tbl_usuario.idhorario }}"){
+                    $(this).prop("selected",true).change();
+                }
+            });
+        $("#tbl_usuarios_idarea option").each(function(index,item){
+                if($(item).val()==="{{ tbl_usuario.idarea }}"){
+                    $(this).prop("selected",true).change();
+                }
+            });
+        setTimeout(function(){
+            slctMediAsignado();
+        },"4000");
+    }
+    function slctMediAsignado(){
+        var asignados = '{{ tbl_usuario.medicos }}';
+        if($.trim(asignados) != ""){
+                    $.each(asignados.split(","),function(l,valor){
+                        console.log(valor);
+                            $("select.medicos_codigo_zona option").each(function(i,item){
+                                var op = $(this).val();
+                                console.log($(this).val());
+                                 if(op===valor){
+                                    $(this).prop("selected",true).change();
+                                 }
+                            });
+                    });
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,198 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Usuarios{% endblock %}
+
+{% block body %}
+{% if is_granted("ROLE_ADMIN") == false  %}
+{% set url =  path('dashboard') %}
+<script type="text/javascript">
+window.location="{{url}}";
+</script>
+{% endif %}
+
+<div class="mai-wrapper mai-clinica">
+	<!--------------------------------- Cuerpo DataTable (USUARIOS) -------------------------------->
+	<div class="main-content container">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="panel panel-default panel-table">
+					<div class="panel-heading panel-heading-divider">
+						<div class="tools">
+							<!-- <span class="icon s7-refresh"></span><span class="icon s7-edit"></span> -->
+							<a href="{{ path('tbl_usuarios_new') }}" class="btn btn-space  btn-secondary  px-5 btn-sm">
+								<i class="icon icon-left s7-plus"></i>
+							Agregar Usuario</a>
+						</div>
+						Usuarios
+						<span class="panel-subtitle">Listado de usuarios autorizados para ingreso al sistema</span>
+					</div>
+                    <div class="panel-body mt-5">
+                        <table id="table3" class="table table-striped table-hover-">
+                            <thead style="background: #f5f5f5">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre y Apellidos</th>
+                                    <th>Rol</th>
+                                    <th>Estado</th>
+                                    <th>Email</th>
+                                    <th>Registro</th>
+                                    <th data-orderable="false"></th>
+								</tr>
+							</thead>
+                            <tbody>
+                                {% for tbl_usuario in tbl_usuarios %}
+								<tr>
+									<td>{{ tbl_usuario.idusuario }}</td>
+									<td class="text-capitalize">{{ tbl_usuario.nombre }} {{ tbl_usuario.apellidos }}</td>
+									<td>
+										{% if tbl_usuario.rol == 'ROLE_ADMIN' %}
+										<span>Administrador</span>
+										{% elseif tbl_usuario.rol == 'ROLE_ALMACEN' %}
+										<span>Almacén</span>
+										{% elseif tbl_usuario.rol == 'ROLE_CONSULTORIO' %}
+										<span>Consultorio</span>
+										{% elseif tbl_usuario.rol == 'ROLE_MENSAJERO' %}
+										<span>Mensajero</span>
+										{% elseif tbl_usuario.rol == 'ROLE_SUPERVISOR' %}
+										<span>Supervisor</span>
+										{% elseif tbl_usuario.rol == 'ROLE_SOLICITANTE' %}
+										<span>Solicitante</span>
+										{% else %}
+										<span>--</span>
+										{% endif %}
+									</td>
+									<td>
+										{% if tbl_usuario.status == 'inactivo' %}
+										<span class="badge badge-pill badge-warning">Inactivo</span>
+										{% elseif tbl_usuario.status == 'activo' %}
+										<span class="badge badge-pill badge-success">Activo</span>
+										{% elseif tbl_usuario.status == 'pendiente' %}
+										<span class="badge badge-pill badge-info">Pendiente</span>
+										{% else %}
+										<span class="badge badge-pill badge-dark">Admin</span>
+										{% endif %}
+									</td>
+									<td>
+										<a href="mailto:{{ tbl_usuario.email }}">
+											{{ tbl_usuario.email }}
+										</a>
+									</td>
+									<td>
+                                        <!-- {{ tbl_usuario.registro }} 	 -->
+										{{ tbl_usuario.registro |date("m/d/Y") }}
+									</td>
+									<td class="actions">
+										
+										<a href="{{ path('tbl_usuarios_edit', {'idusuario': tbl_usuario.idusuario}) }}">
+											<span class="s7-note2" data-toggle="tooltip" data-placement="left" title="Editar usuario"></span>
+										</a>	
+										{# {% if tbl_usuario.rol != 'ROLE_ADMIN' %} #}									
+										<a href="#" data-user="{{ tbl_usuario.idusuario }}" class="delete-user">
+											<span class="s7-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></span>
+										</a>
+										<form method="post" id="formd-{{ tbl_usuario.idusuario }}" action="{{ path('tbl_usuarios_delete', {'idusuario': tbl_usuario.idusuario}) }}">
+												<input type="hidden" name="_method" value="DELETE">
+												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ tbl_usuario.idusuario) }}">
+										</form>
+										
+
+										{# {% endif %} #}
+									</td>
+								</tr>
+                                {% else %}
+								<tr>
+									<td colspan="20">No hay usuarios</td>
+								</tr>
+                                {% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+<!---------------------------- POPUP ELIMINAR ------------------------------>
+<form id="mod-danger" tabindex="-1" role="dialog" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" data-dismiss="modal" aria-hidden="true" class="close"><span class="s7-close"></span></button>
+			</div>
+			<div class="modal-body">
+				<div class="text-center">
+					<div class="text-danger"><span class="modal-main-icon s7-close-circle"></span></div>
+					<h3 class="mb-4">Advertencia</h3>
+					<p>Esta seguro de eliminar el usuario?<br>Esta acción eliminará todos los datos relacionados al usuario</p>
+					<div class="mt-6 delete">
+						<button type="button" data-dismiss="modal" class="btn btn-sm btn-space btn-secondary">Cancelar</button>
+						<button class="btn btn-sm btn-space btn-danger"> Eliminar </button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>    
+{% endblock %}
+{% block javascript %}
+<script>
+	$(document).ready(function(){
+		App.init();
+		App.dataTables();
+		App.menuActive(1,5);
+		/* ------------------------------------*/
+		$(".delete-user").click(function(event){
+			var datauser = $(this).attr('data-user');
+			swal({
+			  title: "¿Deseas eliminarlo?",
+			  text: "Esta acción eliminará todos los datos relacionados al usuario!",
+			  type: "warning",
+			  showCancelButton: true,
+			  confirmButtonClass: "btn-danger",
+			  confirmButtonText: "Si, eliminar usuario",
+			  cancelButtonText: "Cancelar",
+			  closeOnConfirm: false
+			},
+			function(confirm){
+				if(confirm){
+					$("form#formd-"+datauser).ajaxSubmit({
+						dataType:  'json',
+						//beforeSubmit:  showRequest,  // pre-submit callback 
+						//success:       showResponse  // post-submit callback 
+						/////////
+						beforeSubmit: function (formData, jqForm, options){
+							return true;							
+							}, 
+						success: function (responseText, statusText, xhr, $form)  {
+							if(responseText.success===1){
+								swal("Eliminado!", "Usuario eliminado!", "success");
+								location.reload(); 
+								}else{
+								swal("Error!", "Este usuario no se puede eliminar", "error");
+							} 
+						}					
+						//////////						
+					});
+				}
+				/**/
+			});
+		});
+		/* ------------------------------------*/
+	});
+	// pre-submit callback
+	function showRequest(formData, jqForm, options) {
+		//var queryString = $.param(formData);
+		return true;
+	}
+	// post-submit callback
+	function showResponse(responseText, statusText, xhr, $form)  {
+		if(responseText.success===1){
+			swal("Eliminado!", "Usuario eliminado!", "success");
+			location.reload(); 
+		}else{
+			swal("Error!", "Este usuario no se puede eliminar", "error");
+		}
+	}
+</script>
+{% endblock %}

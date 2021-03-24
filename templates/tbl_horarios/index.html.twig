@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TblHorarios index{% endblock %}
+
+{% block body %}
+    <h1>TblHorarios index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Idhorario</th>
+                <th>Dias</th>
+                <th>Inicio</th>
+                <th>Fin</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tbl_horario in tbl_horarios %}
+            <tr>
+                <td>{{ tbl_horario.idhorario }}</td>
+                <td>{{ tbl_horario.dias }}</td>
+                <td>{{ tbl_horario.inicio }}</td>
+                <td>{{ tbl_horario.fin }}</td>
+                <td>
+                    <a href="{{ path('tbl_horarios_show', {'idhorario': tbl_horario.idhorario}) }}">show</a>
+                    <a href="{{ path('tbl_horarios_edit', {'idhorario': tbl_horario.idhorario}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('tbl_horarios_new') }}">Create new</a>
+{% endblock %}

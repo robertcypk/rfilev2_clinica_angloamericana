@@ -1,0 +1,152 @@
+<table id="tableProfile" class="table table-striped- table-hover">
+	<thead>
+		<tr>
+			<th style="width:20%;">Responsable</th>
+			<th style="width:20%;">Paciente</th>			
+			<th style="width:15%;">H. Clínica</th>
+			<th style="width:20%;">Z. Entrega</th>
+			<th style="width:15%;">F. Cita</th>			
+			<th style="width:5%;">Estado</th>
+			<!-- DATOS PARA EXPORTAR -->
+			<th class="content-hide">Cod. solicitud</th>	
+			<th class="content-hide">Responsable</th>			
+			<th class="content-hide">Paciente</th>
+			<th class="content-hide">Médico</th>
+			<th class="content-hide">Tipo de solicitud</th>
+			<th class="content-hide">Historia </th>
+			<th class="content-hide">Sede de archivo </th>
+			<th class="content-hide">Tipo de Historia</th>
+			<th class="content-hide">Caja archivo</th>
+			<th class="content-hide">Sede de entrega </th>												
+			<th class="content-hide">Referencia de entrega</th>
+			<th class="content-hide">Origen de pedido</th>
+			<th class="content-hide">Fecha y hora de Cita </th>
+			<th class="content-hide">Ubicacion actual</th>
+			<th class="content-hide">Estado</th>
+			<th style="width:5%;" data-orderable="false"></th>
+		</tr>
+	</thead>
+		<tbody>
+			{% for item in solicitudes %}
+				<tr class="online row-dinamic">
+			<td class="user-avatar cell-detail user-info- border-dinamic">
+				{# {% if item.responsablec != "" %}
+				<img src="{{ asset('/avatar/')}}{{item.imagen}}" width ="30" alt="Avatar">
+				<span>{{ item.responsable }}</span>
+				<span class="cell-detail-description">{{ item.rol|replace({'ROLE_':''})|title }}</span> 
+				{% endif %}#}
+				<span>{{ nombre_usuario(item.responsablec)|title[:15]  }}</span>	
+				
+					<span class="cell-detail-description">{{ origen_pedido(item.dnuevo) }} :	RF2-{{ item.idsolicitud }}	 </span>
+
+			</td>
+			<td class="cell-detail">
+				<span class="text-capitalize">{{ nombre_paciente(item.codpaciente)|lower[:15]  }}</span>
+				<span class="cell-detail-description">Tipo: {{ tipo_pedido(item.codtipopedido)|title }}</span>
+			</td>			
+			<td class="cell-detail">
+				<span>HC{{ formato_hc(item.idhc) }}-{{ formato_folio(item.folio) }} </span>
+				{% set tipohc = ubi_archivo(item.idhc, item.codsede, item.folio, 'estado') %}	
+				{% set caja = ubi_archivo(item.idhc, item.codsede, item.folio, 'caja') %}	
+				{% if tipohc is empty %}
+				<span class="cell-detail-description text-danger">Sin archivo físico</span>
+				{% else %}											
+				<span class="cell-detail-description">{{ tipo_historia(tipohc)}}  / Caja: {{ caja }}</span>
+				{% endif %}	
+			</td>
+			<td class="cell-detail">
+				<span>{{ referencia(item.codzona)|capitalize[:20]  }}</span>					
+				<span class="cell-detail-description">{{nombre_sede(item.codsede)|title}}</span>
+			</td>
+				<td class="cell-detail item-date">
+					<span>{{ item.horapedido|date('h:i a') }} </span>
+					<span class="cell-detail-description">{{ item.fechapedido|date('d') }} de {{ nombre_de_meses(item.fechapedido|date('m')) }}</span>
+					<span class="item-fecha" style="display:none">{{ item.fechapedido }}</span>
+					<span class="item-hora" style="display:none">{{ item.horapedido }}</span>
+				</td>
+					
+				<td class="cell-detail">
+					<span class="badge badge-pill badge{{ tagstats(item.estado) }}">{{ stpedido(item.estado) }}</span>							
+				</td>
+
+				
+					<td class="content-hide">													
+						RF2-{{ item.idsolicitud }}										
+					</td>
+					<td class="content-hide">													
+						{{ item.responsablec }}											
+					</td>
+					<td class="content-hide">
+						{{ nombre_paciente(item.codpaciente)|title }}									
+					</td>
+					<td class="content-hide">
+						{{item.codmedico }} - {{item.nommedico|title }}		
+					</td>
+						<td class="content-hide">
+						{{ tipo_pedido(item.codtipopedido)|title }}
+					</td>
+					<td class="content-hide">
+						HC{{ formato_hc(item.idhc) }}-{{ formato_folio(item.folio) }} 
+					</td>
+					<td class="content-hide">
+						{% if item.codsede == '02' %} La Molina {% else %} San Isidro {% endif %} 
+					</td>
+					<td class="content-hide">
+						{{ tipo_historia(tipohc)}} 
+					</td>
+					<td class="content-hide">
+						{{ caja }}
+					</td>
+					<td class="content-hide">
+						{{nombre_sede(item.codsede)|title}}
+					</td>
+					<td class="content-hide">
+						{{ referencia(item.codzona) }}
+					</td>
+					<td class="content-hide">
+						 {{ origen_pedido(item.dnuevo) }}
+					</td>
+					<td class="content-hide">
+					{{ item.fechapedido|date('d/m/Y h:i a') }}
+					</td>
+					<td class="content-hide">						
+							{{ ubicacion_actual (item.estado) }}							
+					</td>
+					<td class="content-hide">
+						{{ stpedido(item.estado) }}
+					</td>
+				
+					<td class="text-right">
+						{% if is_granted("ROLE_ADMIN") %}
+						<div class="btn-group btn-hspace">
+							<button type="button" data-toggle="dropdown" class="btn btn-secondary btn-xs dropdown-toggle"> Ver
+								<span class="icon-dropdown s7-angle-down"></span>
+							</button>
+							<div role="menu" class="dropdown-menu dropdown-menu-right ">
+								<a href="{{ path('solicitud_detalle') }}/{{ item.idsolicitud }}" class="dropdown-item">Ver Detalles</a>
+								<!-- Formulario para volver a imprimir de forma unitaria -->
+								<a href="#" data-idsolicitud="{{ item.idsolicitud }}" data-user="{{ app.user.idusuario }}"  class="dropdown-item reimprimirsolicitud">Imprimir solicitud</a>
+								<form id="aceptar_solicitud_{{ item.idsolicitud }}" action="{{ path("aceptar_solicitud") }}" method="POST">
+									<input type="hidden" class="custom-control-input" value="{{ item.idsolicitud }}" name="solicitud[{{ loop.index0 }}][idsolicitud]">
+									<input type="hidden" value="{{ app.user.idusuario }}" name="solicitud[{{ loop.index0 }}][user]" >
+								</form>
+								<div class="dropdown-divider"></div>
+								<a href="#" data-estado="2" data-idsolicitud="{{ item.idsolicitud }}" data-user="{{ app.user.idusuario }}" class="dropdown-item confirmarproceso">{{ stpedido(2)}}</a>
+								<a href="#" data-estado="3" data-idsolicitud="{{ item.idsolicitud }}" data-user="{{ app.user.idusuario }}" class="dropdown-item confirmarproceso">{{ stpedido(3)}}</a>
+								<a href="#" data-estado="4" data-idsolicitud="{{ item.idsolicitud }}" data-user="{{ app.user.idusuario }}" class="dropdown-item confirmarproceso">{{ stpedido(4)}}</a>
+								<a href="#" data-estado="5" data-idsolicitud="{{ item.idsolicitud }}" data-user="{{ app.user.idusuario }}" class="dropdown-item confirmarproceso">{{ stpedido(5)}}</a>
+								<a href="#" data-estado="6" data-idsolicitud="{{ item.idsolicitud }}" data-user="{{ app.user.idusuario }}" class="dropdown-item confirmarproceso">{{ stpedido(6)}}</a>
+								<a href="#" data-estado="7" data-idsolicitud="{{ item.idsolicitud }}" data-user="{{ app.user.idusuario }}" class="dropdown-item confirmarproceso">{{ stpedido(7)}}</a>
+								<a href="#" data-estado="8" data-idsolicitud="{{ item.idsolicitud }}" data-user="{{ app.user.idusuario }}" class="dropdown-item confirmarproceso">{{ stpedido(8)}}</a>
+							</div>
+						</div>
+						{% else %}
+							<a href="{{ path('solicitud_detalle') }}/{{ item.idsolicitud }}" class="btn btn-secondary btn-xs dropdown-toggle">Ver Detalles <span class="icon-dropdown s7-angle-down"></span></a>
+						{% endif %}
+                        </td>
+						
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+						
+                  </table>

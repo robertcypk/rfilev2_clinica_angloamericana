@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Registro de usuarios {% endblock %}
+
+{% block body %}
+{{ form_start(form, {"class": "", "action": path("registro") }) }}
+{{ form_widget(form) }}
+{{ form_end(form) }}
+{% endblock %}
+
+{% block javascript %}
+<!-- jsvascript registro -->
+<script type="text/javascript">
+jQuery(function(){
+    paises();
+    departamento();
+    provincia();
+    distrito();
+});
+function paises(){
+    $.get("{{ path("paises") }}", function(data){
+        var html = "<option value='pe'>Seleccione un pais</option>";
+        if($.trim(data) !== ""){
+            $.each(data,function(index,item){
+                html += "<option value='"+item+"'>"+index+"</option>";
+            });
+        }
+        $("#user_Codigopais").html(html);
+    },"json");
+}
+function departamento(){
+    $("#user_Codigopais").change(function(){
+        var val = $(this).val();
+        $.get("{{ path("departamento") }}/"+val+"",function(data){
+            var html = "<option value=''>Seleccione un Departamento</option>";
+        if($.trim(data) !== ""){
+            $.each(data,function(index,item){
+                html += "<option  value='"+item.id_ubigeo+"'>"+item.nombre_ubigeo+"</option>";
+            });
+        }
+        $("#user_departamento").html(html);
+        $("#user_departamento").attr('data-pais',val);
+        });
+    });
+}
+function provincia(){
+    $("#user_departamento").change(function(){
+        var val = $(this).val();
+        var datapais = $(this).attr("data-pais");
+        $.get("{{ path("provincia") }}/"+datapais+"/"+val+"",function(data){
+            var html = "<option value=''>Seleccione una provincia</option>";
+        if($.trim(data) !== ""){
+            $.each(data,function(index,item){
+                html += "<option value='"+item.id_ubigeo+"'>"+item.nombre_ubigeo+"</option>";
+            });
+        }
+        $("#user_provincia").html(html);
+        $("#user_provincia").attr('data-pais',datapais);
+        });
+    });
+}
+function distrito(){
+    $("#user_provincia").change(function(){
+        var val = $(this).val();
+        var datapais = $(this).attr("data-pais");
+        $.get("{{ path("distrito") }}/"+datapais+"/"+val+"",function(data){
+            var html = "<option value=''>Seleccione un distrito</option>";
+        if($.trim(data) !== ""){
+            $.each(data,function(index,item){
+                html += "<option value='"+item.id_ubigeo+"'>"+item.nombre_ubigeo+"</option>";
+            });
+        }
+        $("#user_distritos").html(html);
+        $("#user_distritos").attr('data-pais',datapais);
+        });
+    });
+}
+function areas(){}
+function horarios(){}
+</script>
+{% endblock %}

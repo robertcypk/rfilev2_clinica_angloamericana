@@ -1,0 +1,118 @@
+:root{
+    --header-color:#0B305C;
+    --header-hover: #2196F3;
+    --background: #f4f4f4;
+    --color-items: orange;
+}
+
+/*********************** HEADER **************************/
+.clinica-header{
+    background-color: var(--header-color);
+    
+}
+.clinica-header .container{
+    align-items: center
+}
+.clinica-header .container > *{
+    height: 72px;
+}
+.clinica-header .nav-item{
+    padding-top: 5px;
+}
+.clinica-header .dropdown-item:hover{
+    background-color: var(--header-hover) !important;
+}
+.clinica-header .nav-info-user .user-name{
+    font-size: 1rem;
+    margin-right: 5px;
+}
+.clinica-header .nav-info-user img{
+    border: 2px solid #fff;
+    max-width: 35px !important;
+    max-height: 35px !important;
+    border-radius: 50% !important;
+}
+
+.mai-top-header .navbar-brand{
+    background-image: url(../img/clinica/hd_logo.png);
+    background-size: 110px;
+    height: 60px;
+}
+
+.main-logo{
+    position: absolute;
+    z-index: 999;
+    right: 0;
+    bottom: -111px;
+}
+
+/*********************** NAV **************************/
+
+.mai-clinica .mai-sub-header{
+    background: var(--background);
+}
+
+.mai-clinica .navbar-nav .clinica-item > .nav-link > span{
+    color: #000 !important;
+}
+.mai-clinica .clinica-item span{
+    font-weight: 300;
+}
+
+.mai-nav-tabs-sub > .nav-item > .nav-link.active {
+    color: var(--color-items);
+}
+
+
+.nav-link.hover, .nav-link:hover {
+    color: var(--color-items);
+}
+.mai-nav-tabs-sub > .nav-item.parent.show > .nav-link {
+    color: var(--color-items);
+}
+.mai-nav-tabs-sub > .nav-item.parent > .nav-link:after{
+    color: grey !important;
+}
+
+.content-clinica .s7-cloud-download{
+    display: none !important;
+}
+.dropdown-item {
+    font-weight: 300;
+}
+a:focus, a:hover{
+    color: #545454;
+}
+
+/******************************************************************************/
+
+.clinica-description-item{
+    display:flex;
+    width: 100%;
+    padding-left:23px;
+    padding-right: 23px;
+    margin-bottom: 10px;
+}
+@media screen and (max-width: 576px){
+    .clinica-description-item{
+        display: none;
+    }
+}
+
+.item-title{
+    width:20%;
+   
+}
+
+.clinica-list-patient .color-center{
+    color: var(--call-center);
+}
+
+.clinica-list-patient .project-item-progress .urgencia{
+    color: red;
+}
+.retrasado{
+    color: orange;
+}
+
+/* Borders */

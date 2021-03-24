@@ -1,0 +1,236 @@
+{% extends 'base.html.twig' %}
+{% block title %}Gestionar Historia Clínica{% endblock %}
+{% block body %}
+
+<div class="mai-wrapper mai-clinica">
+	<div class="main-content container">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="panel panel-default ">
+					<div class="panel-heading ">
+						Gestión de tipo documental de Historias Clínicas
+						<span class="panel-subtitle">Seleccione los criterios de busqueda para mostrar las solicitudes atendidas para complementar la información. </span>
+					</div>
+					<div class="panel-body">
+						<form action="" method="post" class="mayoristas-search">
+							<div class="row">
+								<div class="col-sm-3 pr-0">
+									<div class="form-group">
+										<select name="sede" id="region" class="form-control" required ="" data-parsley-errors-messages-disabled="false">
+											<option value="">Seleccionar Sede</option>
+											<option value="01">Sede Central</option>
+											<option value="02">La Molina</option>
+											<option value="03">Torre Consultorios</option>
+											<option value="04">Torre Dr. Fleck</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-3 pr-0">
+									<input name="inicio" id="inicio" type="text" placeholder="Fecha de atención" class="form-control" autoComplete="off" required ="" data-parsley-errors-messages-disabled="false">
+								</div>
+								{# <div class="col-sm-3 pr-0">
+									<input name="fin" id="fin" type="text" placeholder="Fecha final" class="form-control" autoComplete="off" required ="" data-parsley-errors-messages-disabled="false">
+								</div> #}
+								<div class="col-sm-3 pr-0">
+									<div class="form-group">
+										<button type="submit" class="btn btn-space btn-secondary btn-lg search m-0 pl-5 pr-5" style="font-size:;">Buscar</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				
+				
+				<div class="panel panel-default panel-table">
+					
+					<div class="panel-heading panel-heading-divider">
+						Resultado: <span class="text-danger">{{ total }} solicitudes devueltas en Archivo</span>
+						
+					</div>
+					{# <form class="panel-body mt-3"> #}
+							<form id="guardardocumento" action="{{ path('guardardocumento') }}" method="POST" >
+												<table id="table3" class="table table-striped- table-hover">	
+												<thead style="background: #f5f5f5">
+														<tr>							
+															<th >Solicitud</th>
+															<th >Sede</th>
+															<th>HC</th>
+															<th>Paciente</th>
+															<th >F. Entrega</th>
+															<th data-orderable="false">Hospitalizacion</th>
+															<th data-orderable="false">Documento</th>
+															<th data-orderable="false">Tipo</th>
+														</tr>
+															</thead>
+															<tbody>	
+															{% for item in solicitudes %}
+																<tr>
+																	<td>
+																	{{ item.idsolicitud }}
+																	</td>
+																	<td>
+																	{% if item.codsede == 1 %}
+																	San Isidro
+																	{% else %}
+																	La Molina
+																	{% endif %}
+																	</td>
+																	<td>
+																	<a href="#" data-hc="{{ tblhc(item.codpaciente ,'codhistoria') }}">{{ tblhc(item.codpaciente ,'codhistoria') }}</a>
+																	</td>
+																	<td class="text-capitalize">{{ item.paciente }}</td>
+
+																	<td>{{ item.fechapedido }}</td>
+																	<td class="text-right">
+																	<select name="documento[{{loop.index0}}][hospitalizacion]"  class="custom-control documento-hospitalizacion" required='' >
+																	</select>
+																	</td>
+																	<td class="text-right">
+																	<select name="documento[{{loop.index0}}][documento]" class="custom-control documento-doc" required='' >
+																	</select>
+																	</td>
+																	<td class="text-right">
+																	<select name="documento[{{loop.index0}}][tipo]" class="custom-control documento-tipo" required='' >
+																	</select>
+																	<input type="hidden" name="documento[{{loop.index0}}][idsolicitud]" value="{{ item.idsolicitud }}" >
+																	</td>
+																</tr>
+															{% endfor %}
+													</tbody>
+													<tfoot>
+															<tr>
+																<td colspan="8">
+																	<div class="text-left">
+																		<button type="submit"  class="btn btn-primary btn-xs acdc">Actualizar documentos </button>
+																	</div>
+																</td>
+															</tr>
+														</tfoot>
+														</table>
+                                </form>
+								<form action="{{ path("reportes") }}" id="reporte" method="post">
+									<input type="hidden" name="buscar" id="buscar" value="">
+								</form>
+                                                        </div>
+                                                        </div>
+                                                        </div>
+
+					</div>
+					{# </form> #}
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+
+<script>
+	$(document).ready(function(){
+		App.init();
+		App.dataTables();
+        App.menuActive(1,2);
+		$('form#guardardocumento').parsley();
+        $( "#inicio" ).datepicker({
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'dd-mm-yy'
+		});
+		$( "#fin" ).datepicker({
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'dd-mm-yy'
+		});
+		
+		$("table#table3 a").click(function(){
+			var d = $(this).attr("data-hc");
+			$("#buscar").val(d);
+			$("form#reporte").submit();
+		});
+
+		$(".acdc").click(function(){
+			//ajaxForm
+			$("form#guardardocumento").ajaxSubmit({
+			"datatype":"json",
+			"success": function(responseText, statusText, xhr, $form){
+				if(responseText.success===1){
+					swal("Procesando!", "Ubicación guardada correctamente!", "success");
+					location.reload();
+				}else if(responseText.success===2){
+					swal("Procesando!", "Ubicación actualizada correctamente!", "success");
+					location.reload();
+				}else{
+					swal("Procesando!", "Esta ubicación no se puede guardar!", "error");
+				}
+			}
+			});
+			return false;
+		});
+
+		
+
+		setTimeout(function(){
+			selects();
+		},1000)
+		
+	});
+	function selects(){
+		var urlJson =  "{{ asset('/json/')}}";
+		$.get(urlJson + "data_hospital.json",function(data){
+			var html = "<option value=''>Seleccionar Hospital</option>";
+			//if($.trim(data.hospital) !== ""){
+				$.each(data.hospital,function(index,item){
+					html += '<option value="'+ item.nombre +'" >'+ item.nombre + '</option>';
+				});
+			//}
+			$(".documento-hospitalizacion").html(html);
+		},'json');
+		
+		$.get(urlJson + "data_documentos.json",function(data){
+			var html = "<option value=''>Seleccionar un documento</option>";
+			if($.trim(data) !== ""){
+				$.each(data,function(index,item){
+					html += '<option value="'+ index +'" >'+ index + '</option>';
+				});
+			}
+			$(".documento-doc").html(html);
+		},'json');
+		
+		$.get(urlJson + "data_documentos.json",function(data){
+			var html = "<option value=''>Seleccionar un tipo</option>";
+			if($.trim(data.Imágenes) !== ""){
+				$.each(data.Imágenes,function(index,item){
+					//if(index === "Imágenes"){
+						html += '<option value="'+ item.nombre +'" >'+ item.nombre + '</option>';
+					//}
+				});
+			}
+			$(".documento-tipo").html(html);
+		},'json');	
+	}
+	function selectfiltro(){
+		$(".documento-doc").change(function(){
+			var v = $(this).val();
+			$.get(urlJson + "data_documentos.json",function(data){
+				var html = "<option value=''>Seleccionar un tipo</option>";
+				if($.trim(data.Imágenes) !== ""){
+					$.each(data.Imágenes,function(index,item){
+						console.log(index);
+						//if(index === "Imágenes"){
+							html += '<option value="'+ item.nombre +'" >'+ item.nombre + '</option>';
+						//}
+					});
+				}
+				$(".documento-tipo").html(html);
+			},'json');
+		})
+	}
+</script>
+
+{% endblock %}

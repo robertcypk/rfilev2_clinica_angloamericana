@@ -1,0 +1,139 @@
+<definitions name="PacienteService"
+   targetNamespace="http://192.168.0.11/rfile/historiasclinicas/?wsdl"
+   xmlns="http://schemas.xmlsoap.org/wsdl/"
+   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+   xmlns:tns="http://192.168.0.11/rfile/historiasclinicas/?wsdl"
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <message name="InsertarPacienteRequest">
+       <!-- Insertar Informacion de paciente -->
+      <part name="nombrepaciente" type="xsd:string"/>
+      <part name="apellidopaterno" type="xsd:string"/>
+      <part name="apellidomaterno" type="xsd:string"/>
+      <part name="codpaciente" type="xsd:string"/>
+      <part name="numdocumento" type="xsd:string"/>
+      <part name="fechanacimiento" type="xsd:string"/>
+      <part name="codtipodocumento" type="xsd:string"/>
+      <part name="email" type="xsd:string"/>
+      <part name="telefono" type="xsd:string"/>
+      <part name="celular" type="xsd:string"/>
+      <part name="codigopostal" type="xsd:string"/>
+      <part name="pais" type="xsd:string"/>
+      <part name="codubigeo" type="xsd:string"/>
+      <part name="departamento" type="xsd:string"/>
+      <part name="localidad" type="xsd:string"/>
+      <part name="direccion" type="xsd:string"/>
+      <part name="numdireccion" type="xsd:string"/>
+   </message>
+   <message name="InsertarHistoriaRequest">
+      <!-- Insertar Historia clinica -->
+      <part name="codhistoria" type="xsd:string"/>
+      <part name="codpaciente" type="xsd:string"/>
+      <part name="sede" type="xsd:string"/>
+      <part name="tipohc" type="xsd:string"/>
+   </message>
+   <message name="InsertarPedidoRequest">
+   <!-- Insertar Pedido de Historial Clinico -->
+      <part name="codhistoria" type="xsd:string"/>
+      <part name="codsede" type="xsd:string"/>
+      <part name="fechapedido" type="xsd:string"/>
+      <part name="horapedido" type="xsd:string"/>
+      <part name="codtipopedido" type="xsd:string"/>
+      <part name="codmedico" type="xsd:string"/>
+      <part name="nommedico" type="xsd:string" />
+      <part name="dnuevo" type="xsd:string" />
+      <part name="anulado" type="xsd:string"/>
+      <part name="codzona" type="xsd:string"/>
+      <part name="codconsultorio" type="xsd:string"/>
+      <part name="nomconsultorio" type="xsd:string"/>
+      <part name="idcita" type="xsd:string"/>
+      <part name="reqplaca" type="xsd:string"/>
+      <part name="codpaciente" type="xsd:string"/>
+      <part name="responsable" type="xsd:string"/>
+   </message>
+   <!-- response -->
+   <message name="InsertarHistoriaResponse">
+      <part name="status" type="xsd:string"/>
+   </message>
+    <message name="InsertarPacienteResponse">
+      <part name="status" type="xsd:string"/>
+   </message>
+   <message name="InsertarPedidoResponse">
+      <part name="status" type="xsd:string"/>
+   </message>
+   <!-- port -->
+   <portType name="Paciente_PortType">
+      <operation name="InsertarPaciente">
+         <input message="tns:InsertarPacienteRequest"/>
+         <output message="tns:InsertarPacienteResponse"/>
+      </operation>
+      <operation name="InsertarHistoria">
+         <input message="tns:InsertarHistoriaRequest"/>
+         <output message="tns:InsertarHistoriaResponse"/>
+      </operation>
+      <operation name="InsertarPedido">
+         <input message="tns:InsertarPedidoRequest"/>
+         <output message="tns:InsertarPedidoResponse"/>
+      </operation>
+   </portType>
+
+   <binding name="Paciente_Binding" type="tns:Paciente_PortType">
+      <soap:binding style="rpc"
+         transport="http://schemas.xmlsoap.org/soap/http"/>
+      <!-- InsertarPaciente -->
+      <operation name="InsertarPaciente">
+         <soap:operation soapAction="InsertarPaciente"/>
+         <input>
+            <soap:body
+               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+               namespace="http://192.168.0.11/rfile/historiasclinicas/?wsdl"
+               use="encoded"/>
+         </input>
+         <output>
+            <soap:body
+               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+               namespace="http://192.168.0.11/rfile/historiasclinicas/?wsdl"
+               use="encoded"/>
+         </output>
+      </operation>
+      <!-- InsertarHistoria -->
+      <operation name="InsertarHistoria">
+         <soap:operation soapAction="InsertarHistoria"/>
+         <input>
+            <soap:body
+               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+               namespace="http://192.168.0.11/rfile/historiasclinicas/?wsdl"
+               use="encoded"/>
+         </input>
+         <output>
+            <soap:body
+               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+               namespace="http://192.168.0.11/rfile/historiasclinicas/?wsdl"
+               use="encoded"/>
+         </output>
+      </operation>
+      <!-- InsertarPedido -->
+      <operation name="InsertarPedido">
+         <soap:operation soapAction="InsertarPedido"/>
+         <input>
+            <soap:body
+               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+               namespace="http://192.168.0.11/rfile/historiasclinicas/?wsdl"
+               use="encoded"/>
+         </input>
+         <output>
+            <soap:body
+               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+               namespace="http://192.168.0.11/rfile/historiasclinicas/?wsdl"
+               use="encoded"/>
+         </output>
+      </operation>
+   </binding>
+
+   <service name="Paciente_Service">
+      <documentation>Description File of RFILE-PacienteService</documentation>
+      <port binding="tns:Paciente_Binding" name="Paciente_Port">
+         <soap:address
+            location="http://192.168.0.11/rfile/historiasclinicas/?wsdl" />
+      </port>
+   </service>
+</definitions>

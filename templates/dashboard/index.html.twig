@@ -1,0 +1,433 @@
+{% extends 'base.html.twig' %} {% block title %}Dashboard{% endblock %} {% block body %}
+<div id="route_dashboard" data-route = "{{ path("dashboard") }}"></div>
+<div class="mai-wrapper mai-clinica">
+	<div class="main-content container content-clinica">
+		{% if app.user.rol == 'ROLE_ADMIN' %}
+		<!-- INDICADOR  ADMINISTRADOR-->
+			{% include 'dashboard/admin.html.twig' %}
+		{% endif %}
+ 		<div class="row">
+ 		<!-- Basic tabs-->
+          <div class="col-sm-12">
+		  
+		  {% if app.user.rol == 'ROLE_ADMIN' %}
+		  <div class="project-list-title">Gestión de Solicitudes 
+		 
+ 		  
+		  </div>
+            <div class="tab-container mb-5">
+              <ul role="tablist" class="nav nav-tabs nav-tabs-dashboard">
+			  {# {{ contadorderegistro('activos') }} #}
+                <li class="nav-item"><a href="#profile" data-toggle="tab" role="tab" class="nav-link active"><span class="badge badge-pill badge{{ tagstats(estado) }}">   {{ solicitudes|length}} </span> Activas para busqueda y entrega </a></li>
+                <li class="nav-item"><a href="#home" data-toggle="tab" role="tab" class="nav-link "><span class="badge badge-pill badge-danger"> {{ contadorderegistro('pendientes') }} </span> Pendientes del día</a></li>
+              </ul>
+              	<div class="tab-content">					
+					<div id="profile" role="tabpanel" class="tab-pane active ">					
+						{% include 'dashboard/tabprofile.html.twig' %}
+                	</div>
+					<div id="home" role="tabpanel" class="tab-pane solicitudespendientes">
+                	</div>
+              </div>
+            </div>
+			{% else %}
+			
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="project-list-title">
+						Seguimiento de últimas solicitudes  
+						</div>	
+					</div>	
+					<div class="col-sm-6 text-right">					
+						<a href="{{ path('reportes') }}" class="btn btn-space btn-secondary active" >
+						<i class="icon icon-left s7-config"></i>
+						 Consultar reporte de HC
+						 </a>
+					</div>	
+				</div>
+
+				<div class="panel panel-default ">					
+					<div class="panel-body">
+						{% include 'dashboard/tabprofile.html.twig' %}
+						{# {% include 'dashboard/tbl_solicitudes.html.twig' %} #}
+					</div>
+				</div>
+
+
+			{% endif %}
+          </div>
+		</div>
+
+	</div>
+</div>
+
+{% endblock %} {% block javascript %}
+
+<script>
+var urlSite = "{{ asset('/')}}";
+	$(document).ready(function () {
+		$.fn.dataTable.ext.errMode = 'none';
+		
+		App.init();
+		App.menuActive(1, 1);
+		App.dataTables();
+		{% if app.user.rol == 'ROLE_ADMIN' %}
+		
+			var url = "{{ path('dashboard')}}";
+			var selec =  '<form action="'+ url +'" method="post" id="FormFilter">' ;
+			selec += '<select id="dynamic_estatus" name="estado" required="" class="form-control- select-gray">' ;
+			selec += '<option value="">Seleccionar estado</option>'		;										
+			selec += '<option value="1">En Busqueda</option>';
+			selec += '<option value="2">Encontrado</option>';
+			selec += '<option value="3">En Trayecto</option>';
+			selec += '<option value="4">Entregado</option>';
+			selec += '<option value="5">En Retorno</option>';
+			selec += '<option value="6">En Acopio</option>';
+			//selec += '<option value="7">Archivado</option>';
+			selec += '</select> </form>';		
+		
+		$(".mai-datatable-header > div:eq( 0 )").append(selec);
+		$('#dynamic_estatus option:eq('+{{ estado }}+')').prop('selected', true)
+		$('#dynamic_estatus').on('change', function () {
+				//var route = {{ path('dashboard')}}+"/"+estado
+				var route = $("#route_dashboard").data("route") + "/" + $("#dynamic_estatus").val();
+				location.href = route;
+				//$( "#FormFilter" ).submit();
+				console.log(route);
+				/*var id = $(this).val(); // get selected value
+				if (idl) { // require a URL
+					window.location = url; // redirect					 
+				}*/
+				return false;
+			});
+		{% endif %}	
+
+		/*--------------------------------------*/
+		/*CHART DE ADMINISTRADOR */
+		/*--------------------------------------*/
+		
+		function randomScalingFactor() {
+			return Math.round(Math.random() * 100);
+			};
+
+
+		function barChart(){
+				//Set the chart colors
+				var color1 = "#ce0635";//"#b7965d";
+				var color2 = "#d4a75a";//tinycolor( App.color.primary ).lighten( 22 );
+
+			//Get the canvas element
+					var ctx = document.getElementById("bar-chart");
+					
+					var data = {
+				labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"],
+				datasets: [{
+					label: "San Isidro",
+					borderColor: color1,
+					backgroundColor: color1,//.setAlpha(.8),
+					data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()]
+				}, {
+					label: "La Molina",
+					borderColor: color2,
+					backgroundColor: "rgba(212,167,90,0.80)",//color2.setAlpha(.5),
+					data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()]
+				}]
+				};
+
+				var bar = new Chart(ctx, {
+				type: 'bar',
+				data: data,				
+				options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				elements: {
+					rectangle: {
+					borderWidth: 2,
+					borderColor: 'rgb(0, 255, 0)',
+					borderSkipped: 'bottom'
+					}
+				},
+				}
+			});
+		}
+
+		/* ------------------------------------*/
+		{% if app.user.rol == 'ROLE_ADMIN' %}		
+		setTimeout(function(){				 
+				solicitudespendientes();			
+		},1000);
+		{% endif %}
+		reimprimirsolicitud();
+
+		/* ------------------------------------*/
+			$('#check-all').change(function() {
+				var st = $(this).prop('checked');
+				var checkboxes = $(this).closest('form').find(':checkbox');
+				if (st){
+					checkboxes.prop('checked', true);
+				}else {
+					checkboxes.prop('checked', false);		
+				}
+			});
+
+		/* ------------------------------------*/
+		$("a.confirmarproceso").click(function (event) {
+			var estado = $(this).attr('data-estado');
+			var idsolicitud= $(this).attr('data-idsolicitud');
+			var user= $(this).attr('data-user');
+			var estadotxt = $(this).text();
+			swal({
+				html: true,
+				title: "¿Deseas cambiar al estado: </br> <u class='text-danger text-uppercase'>"+ estadotxt +"</u>?",
+				text: "Esta acción actualizara el estado de atención de la Historia Clínica!<br>", //+
+						//"<select class='form-control mt-3' id=\"responsable\">"+
+						//"{% for responsables in responsables %} <option value=\"{{ app.user.idusuario }}\">Usuario por defecto ( {{ app.user.nombre }} {{ app.user.apellidos }} )</option> <option value=\"{{responsables.idusuario }}\">{{ responsables.nombre }} {{ responsables.apellidos }}</option> {% endfor %}"+
+						//"</select>"
+				icon: "success",
+				imageUrl: "{{ asset('/assets/img/')}}folder_icon.png",
+				type: "input",
+				showCancelButton: true,
+				showLoaderOnConfirm: false,
+				confirmButtonClass: "btn-danger",
+				confirmButtonText: "Si, proceder",
+				cancelButtonText: "Cancelar",
+				closeOnConfirm: true,
+				inputPlaceholder: "Comentarios"
+			},
+				function (confirm) {
+					var select = $("div.sweet-alert select#responsable").val();
+					if (confirm) {
+						var responsable = user;
+						if( $.trim(select) !== "" && estado === 2){
+							responsable = select;
+						}
+						$.post('{{ path("procesar_solicitud") }}',{user:responsable,idsolicitud:idsolicitud,estado:estado,confirm:confirm},function(data){
+							if(data.success){
+								swal("Procesando!", "Solicitud Procesada!", "success");
+								location.reload();
+							}else{
+								swal("Procesando!", "Esta Solicitud no se puede procesar!", "error");
+							}
+						},'json');
+					}
+					/**/
+				});
+		});
+		/* ------------------------------------*/
+		function responsable(){			
+		}
+
+		function countUp() {
+
+			$('[data-toggle="counter"]').each(function (i, e) {
+				var _el = $(this);
+				var prefix = '';
+				var suffix = '';
+				var start = 0;
+				var end = 0;
+				var decimals = 0;
+				var duration = 1;
+
+				if (_el.data('prefix')) { prefix = _el.data('prefix'); }
+				if (_el.data('suffix')) { suffix = _el.data('suffix'); }
+				if (_el.data('start')) { start = _el.data('start'); }
+				if (_el.data('end')) { end = _el.data('end'); }
+				if (_el.data('decimals')) { decimals = _el.data('decimals'); }
+				if (_el.data('duration')) { duration = _el.data('duration'); }
+				var count = new CountUp(_el.get(0), start, end, decimals, duration, {
+					suffix: suffix,
+					prefix: prefix,
+				});
+
+				count.start();
+			});
+		}
+
+		{% if app.user.rol == 'ROLE_ADMIN' %}
+				//Dashboard();
+				barChart();
+		{% endif %}
+
+		countUp()
+		cambiarFilaEstado()					
+		
+		function cambiarFilaEstado(){
+			var time = 60000 // 1 min	
+			var relpag = 300000 // 5 min
+			setInterval(function(){
+				location.reload();
+			},relpag);
+			{% if estado < 3 and  app.user.rol == 'ROLE_ADMIN' %}
+				//Temporizador
+				revisarHoras();			
+				setInterval(function(){
+					revisarHoras();	
+				},time)	
+			{% endif %}
+				
+		}
+		function revisarHoras() {
+				var cond1 = 900000	// 15 min
+				var cond2 = 1800000 // 30 hora
+				var cond3 = 3600000 // 1hora
+				$('#tableProfile tbody tr .item-date').each(function(index, value){					//
+					var item_fecha = $(this).children('.item-fecha').text()
+					//var item_hora = $(this).children('.item-hora').text()
+					var item_border = $(this).parent('.row-dinamic').children('.border-dinamic')				
+						var diferencia = obtenerDiferencia(item_fecha)	
+							//console.log(item_fecha + " >>>> " + diferencia);
+						if(diferencia){
+							if(diferencia <= cond3 && diferencia > cond2){
+								//console.log("menor 1 hora - verde")
+								item_border.addClass('border-green')
+							}else{
+								//item_border.removeClass('border-color-1')
+							}
+							if(diferencia <= cond2 && diferencia > cond1){
+								//console.log("menor 30 min naranja")
+								item_border.addClass('border-orange')
+							}else{
+								//item_border.removeClass('border-color-2')
+							}
+							if(diferencia <= cond1 && diferencia >= 0){
+								//console.log("menor 15 minut amarillo ")						
+								item_border.addClass('border-yellow')
+							}else{
+								//item_border.removeClass('border-color-3')
+							}
+							if(diferencia <= 0){
+								//console.log("menor 0 minut red ")						
+								item_border.addClass('border-red')
+							}else{
+								//item_border.removeClass('border-color-3')
+							}							
+					}					
+				})	
+		}
+
+		function obtenerDiferencia(item_fecha){
+		//	console.log (item_fecha + " /////")
+			var fechaActual = new Date().getTime();	
+			var fechaItem = new Date(item_fecha).getTime();			
+			return fechaItem-fechaActual;						
+		}
+	});
+
+
+// IMPRIMIR TICKETS AUTOMATICAMENTE
+	function checkSolicitudes() {
+	var f=new Date();
+	var h=f.getHours();
+	//var h=7;
+	var mx = 2;
+	var st;
+
+	$('tr span.hora').each( function( index, value ) {
+		var row = $(this);
+			var hr = $(this).text();
+			var hrf = Number(hr.slice(0, 2)) - mx ;
+			console.log (hr + " // " + hr.slice(0, 2) + " ** " + hrf + " --" + h )			
+			if (hrf <= h ) {
+				//row.css("background","red");
+				var checkbox = row.closest('tr').find(':checkbox');
+				checkbox.prop('checked', true);	
+				st = true;		
+			}
+			});
+			if (st ){
+				st = false;
+				//$("form#aceptar_solicitud").submit();
+				console.log("Si hay para imprimir");
+			}else{
+				console.log("NO hay para imprimir");
+
+			}
+			setTimeout(checkSolicitudes, 20000); // 10seg
+	}
+
+	// ACEPTAR PENDIENTE / IMPRIMIR TICKETS
+	function solicitudespendientes(){
+		$(".solicitudespendientes").html('<div class="loadingDiv"><div class="lds-ripple"><div></div><div></div></div></div>');
+		$.ajax({
+				type: "GET",
+				url: '{{ path("ajax_solicitudes_pendientes") }}',
+				//data: { rowid: rowid, qty: qty },
+				dataType: 'html',
+				success: function(data){
+					$(".solicitudespendientes").html(data);
+					//checkSolicitudes();//iniciar loop
+					App.dataTables();
+					$('#check-all').change(function() {
+						var st = $(this).prop('checked');
+						var checkboxes = $(this).closest('form').find(':checkbox');
+						if (st){
+							checkboxes.prop('checked', true);
+						}else {
+							checkboxes.prop('checked', false);		
+						}
+					});
+					$("form#aceptar_solicitud").on("submit", function(e){
+						e.preventDefault();
+						var url = $(this).attr('action');
+						var data = $(this).serializeArray();
+						var numberOfChecked = $('input:checkbox:checked').length;
+						if (numberOfChecked < 1) {						
+							swal("¡Falta solicitudes!", "Selecciona las solicitudes para atención e impresión del ticket!", "warning");
+							return false;
+						}
+						swal({
+								title: "¿Deseas atender las solicitudes?",
+								text: "Esta acción te asignara como responsable de busqueda de las solicitudes",
+								type: "info",	
+								showCancelButton: true,
+								closeOnConfirm: false,
+								confirmButtonClass: "btn-danger",
+								confirmButtonText: "Sí, asignar solicitudes",
+								cancelButtonText: "Cancelar",
+								showLoaderOnConfirm: true
+								}, function () {
+											
+											$.post(url,data,function(data){
+												if(data.success){
+													//swal("Procesando!", "Solicitud Procesada!", "success");
+													swal("Solicitud confirmada!", "Se ha confirmado la solicitudes para su atención correctamente!", "success");													
+													setTimeout(function () {
+														location.reload();
+													}, 2000);
+												}else{
+													//swal("Procesando!", "Las solicitudes no se pueden procesar!", "error");
+													swal("Error de impresión!", "No se puede tomar la solicitud, revise el funcionamiento de la impresora!", "error");
+												}
+											},'json');
+											
+																
+								});
+
+					})
+					
+				},
+				error: function (response) {
+					//Handle error
+					$(".loadingDiv").hide();
+				}
+			});
+	}
+	
+	function reimprimirsolicitud(){
+		$(".reimprimirsolicitud").on("click", function(e){
+						e.preventDefault();
+						//var url = $(this).attr('action');
+						var url = "{{ path('imprimir_solicitud') }}";
+						var idsolicitud = $(this).attr('data-idsolicitud');
+						var idusuario = $(this).attr('data-user');
+						$.post(url,{idusuario:idusuario,idsolicitud:idsolicitud},function(data){
+							if(data.success===1){
+								swal("Ticket impreso!", "Se ha enviado correctamente la impresión de la solicitud: RF2-" + idsolicitud , "success");
+								//location.reload();
+							}else{
+								swal("Procesando!", "No se puede imprimir, revise e intentelo nuevamente!", "error");
+							}
+						},'json');
+					});
+	}
+</script>
+{% endblock %}

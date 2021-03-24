@@ -1,0 +1,140 @@
+{% extends 'base.html.twig' %} 
+{% block title %}REPORTE DE SOLICITUDES POR USUARIO{% endblock %}
+{% block body %}
+<div class="mai-wrapper mai-clinica">
+
+
+
+	<div class="main-content container">
+		<div class="row">
+			<div class="col-sm-12">
+
+				<div class="panel panel-default ">
+					<div class="panel-heading ">
+						Usuarios
+						<span class="panel-subtitle">Ingrese el <span class="text-danger">Email</span> del usuario para mostrar los registros </span>
+					</div>
+					<div class="panel-body">
+						<form action="{{ path('reportesusuarios') }}" method="post" class="mayoristas-search">
+							<div class="row">
+								<div class="col-sm-7 pr-0 has-danger-">
+									<input name="buscar" id="buscar" value="{{ buscar }}" type="text" placeholder="Usuario@email.com" class="form-control " autoComplete="off">
+								</div>
+								<div class="col-sm-3 pr-0">
+									<div class="form-group">
+										<button type="submit" class="btn btn-space btn-secondary btn-lg search m-0 pl-5 pr-5 border-2-" style="height:44px">Buscar</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+
+
+
+				<div class="panel panel-default panel-table">
+					<div class="panel-heading panel-heading-divider">
+
+						Reporte de atenciones : {{ usuarioh(buscar) }}
+						{# <span class="text-danger">  3 Solicitudes</span> #}
+						<!-- <span class="panel-subtitle">Listado de ubicaciones registradas para envíos</span> -->
+
+					</div>
+
+					<div class="panel-body mt-3">
+						<table id="table3" class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th>Destino </th>
+									<th>HC</th>
+									<th>Referencia </th>
+									<!-- <th>Consultorio</th> -->
+									<th>F. Cita</th>
+									<th>Estado</th>
+									<th data-orderable="false" class="text-right"></th>
+								</tr>
+							</thead>
+							<tbody>
+							{% for item in solicitudes %}
+								<tr>
+									<td>
+										{% set sede = item.codsede %}
+										{% set nomSede = '--' %}
+										{% if sede == '01' %}
+										{% set nomSede = 'Sede Central' %}
+										{% elseif sede == '02' %}
+										{% set nomSede = 'La Molina' %}
+										{% elseif sede == '03' %}
+										{% set nomSede = 'Torre Consultorios' %}
+										{% elseif sede == '04' %}
+										{% set nomSede = 'Torre Dr. Fleck' %}
+										{% else %}
+										{% endif %}
+										{{ nomSede }}
+									</td>
+									<td>
+									<a href="{{ path('reportes') }}?buscar={{ gethcporsolicitud(item.idsolicitud).codhistoria }}">
+									{{ gethcporsolicitud(item.idsolicitud).codhistoria }}
+									</a>
+									</td>
+									<td>
+									{{ getareaporid(item.ubicacion).nombre|default("-") }}
+									</td>
+									<td>
+										{{ item.fechapedido }} {{ item.horapedido|date('h:i:s a') }}
+									</td>
+									 <td>
+										<span class="badge badge-pill badge-success">{{ stpedido(item.estado) }}</span>
+									</td> 
+									<td class="text-right">
+										<div class="btn-group btn-hspace">
+										<a href="{{ path('solicitud_detalle')}}/{{item.idsolicitud}}" class="btn btn-secondary btn-xs ">
+										Ver detalles 
+										<span class="icon-dropdown s7-angle-right"></span></a>
+										</div>
+									</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+							<tfoot>
+                                            <tr>
+                                                <td colspan="7">
+                                                    <div class="text-left">
+                                                        <!--   -->
+														<nav>
+                                                        <ul class="pagination">
+                                                            {{ paginador|raw }}
+                                                        </ul>
+														</nav>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                            </tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</div>
+{% endblock %} {% block javascript %}
+
+<script>
+	$(document).ready(function () {
+		App.init();
+		App.menuActive(2, 2);
+		App.dataTables();
+
+		$("#date1").datepicker({
+			changeMonth: true,
+			changeYear: true
+		});
+
+		$("#date2").datepicker({
+			changeMonth: true,
+			changeYear: true
+		});
+	})
+</script> {% endblock %}

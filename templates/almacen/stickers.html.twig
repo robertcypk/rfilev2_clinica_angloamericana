@@ -1,0 +1,326 @@
+{% extends 'base.html.twig' %}
+{% block title %}Nueva solicitud de Historia Clínica{% endblock %}
+{% block body %}
+
+<div class="mai-wrapper mai-clinica">
+        <div class="main-content container">
+            <div class="row">
+              
+
+            <div class="col-sm-12">
+			<h4 class=" badge-pill badge-danger px-4 py-2 ">Impresión de stickers </h4>
+			
+		<form id="formFolder" method="post" action="{{ path("enviar_imp_sticker_multiple") }}" class="multiple" novalidate="">
+
+			<div class="panel panel-default">
+				<div class="panel-heading panel-heading-divider">
+					Stickers para folios y documentos
+					<span class="panel-subtitle">Ingresa el codigo de Historia para impresión</span>
+				</div>
+				<div class="panel-body">
+					<div class="form-group row pt-5">
+						<label class="col-3 col-form-label text-right">Tipo de sticker <span class="text-danger">*</span></label>
+						<div class="col-6">
+							<select id="tipo" name="tipo" required="required" class="form-control" data-parsley-required-message="Selecciona el tipo de sticker a imprimir">
+								<option value="" >Seleccione </option>
+								<option value="1" >Datos de paciente para folder de HC </option>
+								<option value="2" >Tipo de documento para Historia Clínica</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group row documentos" style = "display:none">
+						<label class="col-3 col-form-label text-right">Documento</label>
+						<div class="col-6">
+							<select id="tipoarch" name="tipoarch" class="form-control" data-parsley-required-message="Selecciona el tipo de documento para anexar">
+								<option value="" >Seleccione </option>
+									<optgroup label="Urgencias"> 									
+										<option value="1" >Hojas de urgencias </option>
+									</optgroup>
+									<optgroup label="Laboratorios"> 
+										<option value="2" >Resultados de laboratorio </option>
+									</optgroup>
+									<optgroup label="Imágenes"> 
+										<option value="3" >Rayos x</option>
+										<option value="4" >Tomografía</option>
+										<option value="5" >Ecografía</option>
+										<option value="6" >Mamografía</option>
+										<option value="7" >Resonancia magnética</option>
+										<option value="8" >Densitometría</option>
+										<option value="9" >Medicina nuclear</option>
+										<option value="10" >Endoscopias</option>
+										<option value="11" >Oftalmológicas</option>
+									</optgroup>
+									<optgroup label="Cardiología"> 
+										<option value="12" >Electrocardiograma</option>
+										<option value="13" >Prueba ergo métrica graduada</option>
+										<option value="14" >Electrocardiografía ambulatoria</option>
+										<option value="15" >Ecocardiografía doppler a color</option>
+										<option value="16" >Mamografía</option>
+										<option value="17" >Holter</option>
+									</optgroup>
+							</select>
+						</div>
+					</div>
+                     <div class="form-group row">
+						<label class="col-sm-3 col-form-label text-right">Cod. Historia</label>
+						<div class="col-sm-3">
+						<div class="input-group mb-2">
+							<input type="text" class="form-control codHC2" placeholder="HC"><span class="input-group-btn">
+							<button type="button" class="btn btn-secundary AddTag2">Agregar</button></span> 
+						</div>
+						</div>
+
+						<div class="col-sm-2 folios" style = "display:none-">
+								<input id="folio" type="number" min="0" max="999" name="folio" class="form-control folio" placeholder="Folio: 000">
+						</div>
+						<div class="col-sm-4 ">
+								 <span class="msj-error" style="font-size: 14px;">
+                            </span>
+						</div>
+                  	</div>
+                     <div class="form-group row">
+                        <label class="col-sm-3 col-form-label text-right">Pacientes <span class="text-danger">*</span></label>
+                        <div class="col-sm-7">
+                        <input id="tags" name="pacientes" type="text" value="" class="form-control" required="required" data-parsley-required-message="Ingresa tus busquedas de pacientes para imprimir" >
+                        </div>
+                    </div>
+					<div class="form-group row ">
+						<label class="col-3 col-form-label text-right">Impresora<span class="text-danger">*</span></label>
+						<div class="col-3">
+							<select id="printer" name="printer" required="required" class="form-control" data-parsley-required-message="Selecciona la etiquetera de impresión">
+								<option value="" >Seleccione </option>
+								<option value="rfile-printer2" >Etiquetera  - San Isidro </option>
+								<option value="rfile-printer1" >Etiquetera  - La Molina</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group row pt-5 pb-5">
+						<div class="col-3">
+						</div>
+						<div class="col-6 ">
+							<button type="submit" class="btn btn-danger btn-lg px-5 btn_sticker_folder">IMPRIMIR STICKER</button>
+							<button type="reset" class="btn btn-secondary btn-lg px-5 ">BORRAR</button>
+							<p class="msg"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+			</div>
+
+			  <div class="col-sm-12">
+				
+		<form id="formDoc" method="post" action="{{ path('enviar_imp_sticker_individual') }}" class="individual" novalidate="">
+			
+			<div class="panel panel-default">
+				<div class="panel-heading panel-heading-divider">
+					Stickers para Usuarios y Cajas
+					<span class="panel-subtitle">Ingresa el codigo ID de usuario ó  Nro de caja para impresión de barras </span>
+				</div>
+				<div class="panel-body">
+                     <div class="form-group row pt-5">
+                        <label class="col-sm-3 col-form-label text-right">ID Usuario / Nro <span class="text-danger">*</span></label>
+                        <div class="col-sm-6">
+                        <input id="" name="codigo" type="text" value="" class="form-control" >
+                        </div>
+                    </div>
+					<div class="form-group row ">
+						<label class="col-3 col-form-label text-right">Impresora <span class="text-danger">*</span></label>
+						<div class="col-3">
+							<select id="printer" name="printer" required="required" class="form-control" data-parsley-required-message="Selecciona la etiquetera de impresión">
+								<option value="" >Seleccione </option>
+								<option value="rfile-printer2" >Etiquetera - San Isidro </option>
+								<option value="rfile-printer1" >Etiquetera - La Molina</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group row pt-3 pb-5">
+						<div class="col-3">
+						</div>
+						<div class="col-6 ">
+							<button type="submit" class="btn btn-danger btn-lg px-5">IMPRIMIR STICKER</button>
+							<button type="reset" class="btn btn-secondary btn-lg px-5 ">BORRAR</button>
+							<p class="msg"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+			</div>
+
+
+    	</div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+{% block javascript %}
+
+<script>
+	$(document).ready(function(){
+		App.init();
+		//App.dataTables();
+        App.menuActive(1,2);
+		$('form').parsley();
+        // imput con tags
+       var tags = $('#tags');
+      // Inicializa tags y configuration
+       tags.tagsinput({
+			tagClass: function(item) {
+				switch (item.tipo) {
+				case '1'  : return 'label label-info';
+				case '2'  : return 'label label-warning label-important';
+				case '3'  : return 'label label-danger';
+				case '4'  : return 'label label-default';
+				case '5'  : return 'label label-default';
+				}
+			},
+			allowDuplicates: true,
+			itemValue: 'id',
+			itemText: 'label'
+        });
+       
+        //BUSCAR HISTORIAS 
+        $('.AddTag2').on("click", function(e){
+			$(".msj-error").html('');
+            var CodeHC = $(".codHC2").val();
+			var CodeFL = $("#folio").val();
+			console.log ("codifo de foli oa consultar:  " + CodeFL);
+             //tags.val();
+            $.post('{{ path("listhc") }}', {codhistoria:CodeHC,codfolio:CodeFL },function(data){			
+			if (data.length == 0 ){
+				console.log("Historia Clínica con Nro de folio  NO Registrada");
+				$(".msj-error").html('HC' + ajustar(6,CodeHC) +  '-'+ ajustar(2,CodeFL) + '<BR><span class="text-danger">NO SE ENCUENTRA REGISTRADA</span>');
+			}
+			$.each(data, function (index, value){
+				var tipohc = tipo_hc(Number(value.tipohistoria)); 	
+				var txtsede = nombre_sede(value.sede)
+				console.log("FOLIO: " + value.folio);
+				var folio =  folio_cod(value.folio); 
+					$('#tags').tagsinput('add', { 
+							id: value.codhistoria,
+							pa:value.codpaciente , 
+							sede:value.sede, 
+							folio:folio,
+							caja:value.caja,
+							tipo:value.tipohistoria, 
+							label: tipohc + " // HC" + value.codhistoria + "-"+ folio + " : " +value.nombre + ' '+ value.paterno + ' '+ value.materno + ' - ' + txtsede 
+							});
+				});
+			},'json');
+        });
+		//autoajustar 
+		function ajustar(tam, num) {
+			if (num.toString().length <= tam) return ajustar(tam, "0" + num)
+			else return num;
+		}
+		//nombre de sede 
+		function nombre_sede(cod) {	
+			switch(cod) {
+				case '01':
+					return "SAN ISIDRO"
+					break;
+				case '02':				
+					return "LA MOLINA";
+					break;
+				case '03':					
+					return "SAN ISIDRO";
+					break;
+				case '04':				
+					return "TORRE DR.FLECK";
+					break;							
+				default:
+					return "SIN SEDE DE ARCHIVO";
+			} 
+		}
+		//tipo de HC
+		function tipo_hc(cod) {
+			console.log("buscado ----" + cod)
+			switch(cod) {
+				case 1:
+					return "ACTIVA";
+					break;
+				case 2:				
+					return "PASIVA";
+					break;
+				case 3:					
+					return "FALLECIDO";
+					break;
+				case 4:				
+					return "ELIMINADO";
+					break;
+				case 5:					
+					return "ANULADO";	
+					break;				
+				default:
+					return "SIN HC EN ARCHIVO";
+			} 
+			
+		}
+		//folio
+		function folio_cod(cod){
+			if (cod !== 0){	
+				folio = ajustar(2,Number(cod));
+			}else {
+			folio = "000";
+			}  
+			return folio;
+		}
+       // $('.tags').select2();
+        $( "#fechapedido" ).datepicker({
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'dd/mm/yy'
+		});
+		$("form.individual").ajaxForm({
+			"datatype":"json",
+			"success": function(responseText, statusText, xhr, $form){
+				if( responseText.success === 0 ){
+					swal("Error!", responseText.success, "error");
+				}else{
+					swal("Enviado!","Sticker Impreso correctamente", "success");
+					$("form.individual")[0].reset();
+					//location.reload();
+				}
+			}
+		});
+		$("#cpa-form").submit(function(e){
+			return false;
+		});
+		$(".btn_sticker_folder").on("click", function(e){
+			e.preventDefault();
+			$("form.multiple").ajaxForm({
+					datatype:"json",
+					data: { 
+						stickers: $("#tags").tagsinput('items')				
+					},
+					"success": function(responseText, statusText, xhr, $form){
+							swal("Enviado!",responseText.msg, "success");
+							$("form.multiple")[0].reset();
+							$('#tags').tagsinput('removeAll');
+					}
+				}).submit();
+			return false;
+		})
+
+
+		$( "#tipo" ).change(function() {
+			var doc = $(this).find(':selected').val();
+			var itm = $(".documentos");
+			var fol = $(".folios");
+			if (doc == 2 ){
+				itm.show(1);
+				$("#tipoarch").prop('required',true);								
+				}else {
+					itm.hide();					
+					$("#tipoarch").prop('required',false);
+					$("#folio").val('');
+				}	
+				$('form').parsley();	
+		});
+	});
+</script>
+
+{% endblock %}

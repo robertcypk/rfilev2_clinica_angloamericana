@@ -1,0 +1,168 @@
+{% extends 'base.html.twig' %}
+{% block title %}Excel Pacientes{% endblock %}
+{% block body %}
+<div class="main">
+	<div class="container">		
+		<!--Input File-->
+        <div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default"> 
+					<div class="panel-heading panel-heading-divider">Importar Pacientes<span class="panel-subtitle"></span></div>
+					<div class="panel-body">
+						<form action="{{ path('procesarexcelpacientes') }}" id="pacientes" enctype='multipart/form-data' method="post">
+							
+							<div class="form-group row">
+								<label class="col-3 col-form-label text-right">Seleccione archivo excel </label>
+								<div class="col-6">
+									<input type="file" name="xml" id="file-2" class="inputfile">
+									<label for="file-2" class="btn  btn-secondary m-0"> <i class="icon icon-layers"></i><span>Buscar archivos...</span></label>
+									<input type="submit" class="btn btn-primary" name="import" value="IMPORTAR PACIENTES">
+								</div>	
+								
+							</div>
+							
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- historias -->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default"> 
+					<div class="panel-heading panel-heading-divider">Importar Historias<span class="panel-subtitle"></span></div>
+					<div class="panel-body">
+						<form action="{{ path('procesarexcelhistorias') }}" id="historia" enctype='multipart/form-data' method="post">
+							
+							<div class="form-group row">
+								<label class="col-3 col-form-label text-right">Seleccione archivo excel </label>
+								<div class="col-6">
+									<input type="file" name="xml" id="file-3" class="inputfile">
+									<label for="file-3" class="btn  btn-secondary m-0"> <i class="icon icon-layers"></i><span>Buscar archivos...</span></label>
+									<input type="submit" class="btn btn-primary" name="import" value="IMPORTAR HISTORIAS">
+								</div>	
+								
+							</div>
+							
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- pedidos -->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default"> 
+					<div class="panel-heading panel-heading-divider">Importar Pedidos<span class="panel-subtitle"></span></div>
+					<div class="panel-body">
+						<form action="{{ path('procesarexcelpedidos') }}" id="pedidos" enctype='multipart/form-data' method="post">
+							
+							<div class="form-group row">
+								<label class="col-3 col-form-label text-right">Seleccione archivo excel </label>
+								<div class="col-6">
+									<input type="file" name="xml" id="file-4" class="inputfile">
+									<label for="file-4" class="btn  btn-secondary m-0"> <i class="icon icon-layers"></i><span>Buscar archivos...</span></label>
+									<input type="submit" class="btn btn-primary" name="import" value="IMPORTAR PEDIDOS">
+								</div>	
+								
+							</div>
+							
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- -->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default"> 
+					<div class="panel-heading panel-heading-divider">Importar Ubicaciones<span class="panel-subtitle"></span></div>
+					<div class="panel-body">
+						<form action="{{ path('procesarexcelubicaciones') }}" id="ubicaciones" enctype='multipart/form-data' method="post">
+							
+							<div class="form-group row">
+								<label class="col-3 col-form-label text-right">Seleccione archivo excel </label>
+								<div class="col-6">
+									<input type="file" name="xml" id="file-5" class="inputfile">
+									<label for="file-5" class="btn  btn-secondary m-0"> <i class="icon icon-layers"></i><span>Buscar archivos...</span></label>
+									<input type="submit" class="btn btn-primary" name="import" value="IMPORTAR UBICACIONES">
+								</div>	
+								
+							</div>
+							
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- -->
+	</div>
+{% endblock %}
+{% block javascript %}
+<script>
+	$(document).ready(function () {
+
+		App.init();
+		//App.menuActive(1, 1);
+
+		/* ------------------------------------*/
+		$("form#pacientes").ajaxForm({
+				dataType:  'json',
+				beforeSubmit: function (formData, jqForm, options){
+							return true;
+				},
+				success: function (responseText, statusText, xhr, $form)  {
+					if(responseText.success===1){
+								swal("Confirmado!", "Se importo excel correctamente!", "success");
+								//location.reload(); 
+								}else{
+								swal("Error!", "No se puede importar excel", "error");
+					} 
+				}
+		});
+		$("form#historia").ajaxForm({
+				dataType:  'json',
+				beforeSubmit: function (formData, jqForm, options){
+							return true;
+				},
+				success: function (responseText, statusText, xhr, $form)  {
+					if(responseText.success===1){
+								swal("Confirmado!", "Se importo excel correctamente!", "success");
+								//location.reload(); 
+								}else{
+								swal("Error!", "No se puede importar excel", "error");
+					} 
+				}
+		});
+		$("form#pedidos").ajaxForm({
+				dataType:  'json',
+				beforeSubmit: function (formData, jqForm, options){
+							return true;
+				},
+				success: function (responseText, statusText, xhr, $form)  {
+					if(responseText.success===1){
+								swal("Confirmado!", "Se importo excel correctamente!", "success");
+								//location.reload(); 
+								}else{
+								swal("Error!", "No se puede importar excel", "error");
+					} 
+				}
+		});
+		$("form#ubicaciones").ajaxForm({
+				dataType:  'json',
+				beforeSubmit: function (formData, jqForm, options){
+							return true;
+				},
+				success: function (responseText, statusText, xhr, $form)  {
+					if(responseText.success===1){
+								swal("Confirmado!", "Se importo excel correctamente!", "success");
+								//location.reload(); 
+								}else{
+								swal("Error!", "No se puede importar excel", "error");
+					} 
+				}
+		});
+		/* ------------------------------------*/
+    });
+</script>
+{% endblock %}
